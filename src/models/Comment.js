@@ -5,6 +5,7 @@ const Comment = new Schema(
     text: {
       type: String,
       required: true,
+      min: 2,
     },
     author: {
       type: Schema.Types.ObjectId,

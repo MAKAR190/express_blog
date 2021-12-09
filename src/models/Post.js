@@ -9,35 +9,43 @@ const Post = new Schema(
     title: {
       type: String,
       required: true,
+      min: 3,
     },
     body: {
       type: String,
       required: true,
+      min: 10,
     },
     usersReading: {
       type: Number,
       required: true,
+      default: 0,
+      min: 0,
     },
     usersLiked: {
       type: Number,
       required: true,
+      default: 0,
+      min: 0,
     },
     views: {
       type: Number,
       required: true,
+      default: 0,
+      min: 0,
     },
     tags: [
       {
         type: Schema.Types.ObjectId,
         ref: "Tag",
-        required: true,
+        required: false,
       },
     ],
     comments: [
       {
         type: Schema.Types.ObjectId,
         ref: "Comment",
-        required: true,
+        required: false,
       },
     ],
     author: {

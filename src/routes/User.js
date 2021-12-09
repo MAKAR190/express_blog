@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../model");
+const { User } = require("../models");
 const router = express.Router();
 const { auth } = require("../middlewares");
 router.get("/:userId", async (req, res) => {

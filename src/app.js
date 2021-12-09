@@ -8,7 +8,7 @@ const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
 const app = express();
 const { User } = require("./models");
-const { User, Auth } = require("./routes");
+const { UserRoute, Auth } = require("./routes");
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Database connected successfully"))
@@ -40,7 +40,7 @@ app.use(volleyball);
 app.use(helmet());
 app.use(cors({ origin: "*" }));
 app.use("/auth", Auth);
-app.use("/users", User);
+app.use("/users", UserRoute);
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });

@@ -29,8 +29,7 @@ const Post = new Schema(
     tags: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Tag",
-        required: true,
+        ref: "tag",
       },
     ],
     comments: [
@@ -43,7 +42,7 @@ const Post = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
   },
   {

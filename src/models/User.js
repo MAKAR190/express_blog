@@ -5,18 +5,23 @@ const User = new Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
+      min: 2,
     },
     password: {
       type: String,
       required: true,
+      min: 6,
     },
     firstName: {
       type: String,
       required: true,
+      min: 2,
     },
     lastName: {
       type: String,
       required: true,
+      min: 2,
     },
     location: {
       type: String,
@@ -24,7 +29,9 @@ const User = new Schema(
     },
     avatarUrl: {
       type: String,
-      required: true,
+      required: false,
+      default:
+        "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300",
     },
     githubUrl: {
       type: String,
@@ -33,14 +40,17 @@ const User = new Schema(
     description: {
       type: String,
       required: false,
+      min: 3,
     },
     work: {
       type: String,
       required: false,
+      min: 3,
     },
     hobby: {
       type: String,
       required: false,
+      min: 3,
     },
     birthDate: {
       type: Date,

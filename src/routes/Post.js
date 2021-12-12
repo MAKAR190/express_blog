@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
     const newPost = await Post.create({
       title: req.body.title,
       tags: [...existingTags, ...newTags],
-      // author: req.user._id,
+      author: req.user._id,
       thumbnailUrl: req.body.thumbnailUrl,
       usersReading: req.body.usersReading,
       usersLiked: req.body.usersLiked,

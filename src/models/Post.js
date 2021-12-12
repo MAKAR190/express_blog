@@ -51,7 +51,7 @@ const Post = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
   },
   {
@@ -59,4 +59,4 @@ const Post = new Schema(
   }
 );
 
-module.exports = model("Post", Post);
+module.exports = model("post", Post);

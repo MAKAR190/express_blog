@@ -3,12 +3,11 @@ const volleyball = require("volleyball");
 const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Postrouter = require("./routes/Post");
 const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
 const app = express();
 const { User } = require("./models");
-const { UserRoute, Auth } = require("./routes");
+const { UserRoute, Auth, Postrouter } = require("./routes");
 require("dotenv").config();
 mongoose
   .connect(process.env.MONGODB_URI)

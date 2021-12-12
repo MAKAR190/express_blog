@@ -16,6 +16,15 @@ router.get("/:userId", async (req, res) => {
 });
 router.post("/:userId/follow", async (req, res) => {
   try {
+    const following = req.user.following.includes(req.params.userId);
+    const followUser = await User.findById(req.params.userId);
+    if (following) {
+      req.user.following.pull(req.params.userId);
+      followUser.followers.pull(req.user._id);
+    } else {
+      req.user.following.addToSet(req.params.userId);
+      followUser.followers.addToSet(req.user._id);
+    }
   } catch (error) {
     res.status(500).send(error);
   }

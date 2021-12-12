@@ -47,9 +47,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
-    const tagsArr = req.body.tags.split(", ");
+    const tagsArr = req.body.tags ? req.body.tags.split(", ") : [];
 
     const existingTags = await Tag.find({
       name: {
@@ -60,7 +60,6 @@ router.post("/", async (req, res) => {
     const filtredTags = tagsArr.filter((tagName) => {
       return !existingTags.find((tag) => tag.name === tagName);
     });
-    console.log(req.body.tags, tagsArr, existingTags, filtredTags);
     const newTags = await Tag.insertMany(
       filtredTags.map((tagName) => ({
         name: tagName,
@@ -69,7 +68,7 @@ router.post("/", async (req, res) => {
 
     const newPost = await Post.create({
       title: req.body.title,
-      tags: [...existingTags, ...newTags],
+      tags: tagsArr ? [...existingTags, ...newTags] : [],
       // author: req.user._id,
       thumbnailUrl: req.body.thumbnailUrl,
       usersReading: req.body.usersReading,
@@ -122,7 +121,7 @@ router.patch("/:_id/likes", async (req, res) => {
     await Post.findOneAndUpdate(req.params._id.usersLiked, req.body, {
       new: true,
     });
-    res.json({ messgae: "Done" });
+    res.json({ message: "Done" });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
@@ -134,7 +133,7 @@ router.patch("/:_id/save", async (req, res) => {
     await Post.findOneAndUpdate(req.params._id.usersReading, req.body, {
       new: true,
     });
-    res.json({ messgae: "Done" });
+    res.json({ message: "Done" });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

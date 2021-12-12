@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const Comment = new Schema(
   {
@@ -25,6 +25,7 @@ const Comment = new Schema(
     likes: {
       type: Number,
       required: true,
+      default:0 
     },
   },
   {
@@ -32,4 +33,5 @@ const Comment = new Schema(
   }
 );
 
-module.exports = model("Comment", Comment);
+
+module.exports = model('comment', Comment);

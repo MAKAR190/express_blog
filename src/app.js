@@ -7,7 +7,7 @@ const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
 const app = express();
 const { User } = require("./models");
-const { UserRoute, Auth, Postrouter } = require("./routes");
+const { UserRoute, Auth, Postrouter, Comments } = require("./routes");
 require("dotenv").config();
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -42,8 +42,11 @@ app.use(cors({ origin: "*" }));
 app.use("/auth", Auth);
 app.use("/users", UserRoute);
 app.use("/posts", Postrouter);
+app.use('/comments', Comments);
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });
+
+
 
 module.exports = app;

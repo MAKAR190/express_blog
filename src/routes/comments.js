@@ -1,36 +1,47 @@
 const express = require("express");
 const { Comment } = require("../models");
-const { auth } = require("../middlewares");
+const { auth, schemaValidate } = require("../middlewares");
 const router = express.Router();
+const { commentValidate } = require("../validationSchemas");
 
-router.post("/", auth, async (req, res) => {
-  try {
-    const newComment = await Comment.create(req.body);
-    res.json(newComment);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-});
-
-router.put("/:commentId", auth, async (req, res) => {
-  try {
-    const comment = await Comment.findById(req.params.commentId);
-    if (comment.author._id !== req.user._id) {
-      res.status(403).json({ message: "Error 403" });
-      return;
+router.post(
+  "/",
+  schemaValidate(commentValidate.create),
+  auth,
+  async (req, res) => {
+    try {
+      const newComment = await Comment.create(req.body);
+      res.json(newComment);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
     }
-    const updatedComment = await Comment.findByIdAndUpdate(
-      req.params.commentId,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedComment);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
   }
-});
+);
+
+router.put(
+  "/:commentId",
+  schemaValidate(commentValidate.create),
+  auth,
+  async (req, res) => {
+    try {
+      const comment = await Comment.findById(req.params.commentId);
+      if (comment.author._id !== req.user._id) {
+        res.status(403).json({ message: "Error 403" });
+        return;
+      }
+      const updatedComment = await Comment.findByIdAndUpdate(
+        req.params.commentId,
+        req.body,
+        { new: true }
+      );
+      res.json(updatedComment);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  }
+);
 
 router.patch("/:commentId/like", auth, async (req, res) => {
   try {

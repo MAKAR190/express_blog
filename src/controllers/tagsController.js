@@ -1,18 +1,18 @@
-const { Tag } = require('../models');
+const { Tag } = require("../models");
 
 exports.getTags = async (req, res) => {
-try {
+  try {
     const { search } = req.query;
     const tags = await Tag.find({
-    name: {
-        $regex: search,
+      name: {
+        $regex: search ? search : "",
         $options: "i",
-    },
+      },
     });
 
     res.json(tags);
-} catch (error) {
+  } catch (error) {
     console.log(error);
     res.status(500).send(error);
-}
+  }
 };

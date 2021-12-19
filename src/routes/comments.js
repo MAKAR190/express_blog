@@ -10,7 +10,10 @@ router.post(
   auth,
   async (req, res) => {
     try {
-      const newComment = await Comment.create(req.body);
+      const newComment = await Comment.create({
+        ...req.body,
+        author: req.user._id,
+      });
       res.json(newComment);
     } catch (error) {
       console.log(error);
@@ -26,7 +29,7 @@ router.put(
   async (req, res) => {
     try {
       const comment = await Comment.findById(req.params.commentId);
-      if (comment.author._id !== req.user._id) {
+      if (comment.author !== req.user._id) {
         res.status(403).json({ message: "Error 403" });
         return;
       }
@@ -68,7 +71,7 @@ router.patch("/:commentId/like", auth, async (req, res) => {
 router.delete("/:commentId", auth, async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.commentId);
-    if (comment.author._id !== req.user._id) {
+    if (comment.author !== req.user._id) {
       res.status(403).json({ message: "Error 403" });
       return;
     }

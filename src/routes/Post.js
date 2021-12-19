@@ -81,7 +81,7 @@ router.post(
         views: req.body.views,
         body: req.body.body,
       });
-      
+
       req.user.posts.push(newPost._id);
       await req.user.save();
 
@@ -153,7 +153,7 @@ router.delete("/:_id", auth, async (req, res) => {
   }
 });
 
-router.patch("/:_id/likes", auth, async (req, res) => {
+router.patch("/:_id/like", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
 

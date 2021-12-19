@@ -19,7 +19,17 @@ router.get("/:userId", async (req, res) => {
       })
       .populate("likedPosts")
       .populate("likesComments")
-      .populate("posts");
+      .populate({
+        path: "posts",
+        populate: [
+          {
+            path: "author",
+          },
+          {
+            path: "tags",
+          },
+        ],
+      });
     if (!user) {
       res.status(404).json({ message: "Not found" });
       return;

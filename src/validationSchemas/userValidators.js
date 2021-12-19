@@ -2,9 +2,9 @@ const yup = require('yup')
 
 exports.create = yup.object().shape({
     username: yup.string().required(),
-    password: yup.string(),
-    firstName: yup.string(),
-    lastName: yup.string(),
+    password: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     location: yup.string().optional(),
     avatarUrl: yup.string().url().optional(),
     githubUrl: yup.string().url().optional(),
@@ -22,9 +22,9 @@ exports.create = yup.object().shape({
 
 exports.update = yup.object().shape({
     username: yup.string().required(),
-    password: yup.string(),
-    firstName: yup.string(),
-    lastName: yup.string(),
+    password: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     location: yup.string().optional(),
     avatarUrl: yup.string().url().optional(),
     githubUrl: yup.string().url().optional(),

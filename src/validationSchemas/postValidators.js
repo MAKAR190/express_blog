@@ -2,8 +2,8 @@ const yup = require('yup')
 
 exports.create = yup.object().shape({
     thumbnailUrl: yup.string().optional(),
-    title: yup.string(),
-    body: yup.string(),
+    title: yup.string().required(),
+    body: yup.string().required(),
     usersReading: yup.number(),
     usersLiked: yup.number(),
     views: yup.number(),

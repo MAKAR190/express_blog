@@ -54,12 +54,13 @@ router.post("/login", schemaValidate(userValidate.create), async (req, res) => {
       token: jwtToken,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
 router.get("/me", auth, async (req, res) => {
   try {
-    const existingUser = await findById(req.user._id)
+    const existingUser = await User.findById(req.user._id)
       .populate("likedPosts")
       .populate("likesComments");
     if (!existingUser) {
@@ -68,6 +69,7 @@ router.get("/me", auth, async (req, res) => {
     }
     res.status(200).json(existingUser);
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });

@@ -5,7 +5,21 @@ const { auth, schemaValidate } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
 router.get("/:userId", async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userId)
+      .populate({
+        path: "readingList",
+        populate: [
+          {
+            path: "author",
+          },
+          {
+            path: "tags",
+          },
+        ],
+      })
+      .populate("likedPosts")
+      .populate("likesComments")
+      .populate("posts");
     if (!user) {
       res.status(404).json({ message: "Not found" });
       return;

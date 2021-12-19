@@ -81,6 +81,9 @@ router.post(
         views: req.body.views,
         body: req.body.body,
       });
+      
+      req.user.posts.push(newPost._id);
+      await req.user.save();
 
       res.json({ newTags, newPost });
     } catch (error) {
@@ -92,9 +95,15 @@ router.post(
 
 router.get("/:_id", async (req, res) => {
   try {
-    const searchedPost = await Post.findById(req.params._id).populate(
-      "comments"
-    );
+    const searchedPost = await Post.findById(req.params._id)
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate("author")
+      .populate("tags");
     res.json(searchedPost);
   } catch (error) {
     console.log(error);

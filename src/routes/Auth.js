@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { auth, schemaValidate } = require("../middlewares");
 const router = express.Router();
 const { userValidate } = require("../validationSchemas");
+const bcrypt = require("bcryptjs");
 router.post(
   "/register",
   schemaValidate(userValidate.create),
@@ -14,7 +15,12 @@ router.post(
       if (user) {
         res.status(409).json({ message: "username in use" });
       }
-      const newUser = await User.create(req.body);
+
+      const hashedPassword = await bcrypt.hash(req.body.password, 12);
+      const newUser = await User.create({
+        ...req.body,
+        password: hashedPassword,
+      });
       const payload = {
         _id: newUser._id,
       };
@@ -53,7 +59,14 @@ router.post("/login", schemaValidate(userValidate.create), async (req, res) => {
 });
 router.get("/me", auth, async (req, res) => {
   try {
-    res.status(200).json(req.user);
+    const existingUser = await findById(req.user._id)
+      .populate("likedPosts")
+      .populate("likesComments");
+    if (!existingUser) {
+      res.status(409).json({ message: "This user does not exist" });
+      return;
+    }
+    res.status(200).json(existingUser);
   } catch (error) {
     res.status(500).send(error);
   }

@@ -102,11 +102,19 @@ const User = new Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
-User.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 12);
+
+User.virtual("fullName").get(function () {
+  return this.firstName + " " + this.lastName;
 });
+
 User.methods.validatePassword = async function (password) {
   return await bcrypt.compare(this.password, password);
 };

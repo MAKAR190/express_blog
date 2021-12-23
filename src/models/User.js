@@ -116,6 +116,6 @@ User.virtual("fullName").get(function () {
 });
 
 User.methods.validatePassword = async function (password) {
-  return await bcrypt.compare(this.password, password);
+  return await bcrypt.compare(password, this.password);
 };
 module.exports = model("User", User);

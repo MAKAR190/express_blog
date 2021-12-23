@@ -7,7 +7,7 @@ exports.create = yup.object().shape({
     usersReading: yup.number(),
     usersLiked: yup.number(),
     views: yup.number(),
-    tags: yup.array(),
+    tags: yup.string(),
     comments: yup.array(),
     author: yup.string(),
 })

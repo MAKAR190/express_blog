@@ -19,6 +19,10 @@ exports.create = yup.object().shape({
     likedComments: yup.array(),
     posts: yup.array(),
 })
+exports.login = yup.object().shape({
+    username: yup.string().required(),
+    password: yup.string().required(),
+})
 
 exports.update = yup.object().shape({
     username: yup.string().required(),

@@ -35,7 +35,7 @@ router.post(
     }
   }
 );
-router.post("/login", schemaValidate(userValidate.create), async (req, res) => {
+router.post("/login", schemaValidate(userValidate.login), async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user || !(await user.validatePassword(req.body.password))) {
@@ -62,7 +62,8 @@ router.get("/me", auth, async (req, res) => {
   try {
     const existingUser = await User.findById(req.user._id)
       .populate("likedPosts")
-      .populate("likesComments");
+      .populate("likesComments")
+      .populate("readingList");
     if (!existingUser) {
       res.status(409).json({ message: "This user does not exist" });
       return;

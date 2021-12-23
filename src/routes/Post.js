@@ -27,7 +27,9 @@ router.get("/", async (req, res) => {
           [sortBy]: Number(sortOrder),
         },
       }
-    );
+    )
+      .populate("author")
+      .populate("tags");
     const count = await Post.countDocuments({
       title: {
         $regex: search,

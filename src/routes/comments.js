@@ -12,8 +12,10 @@ router.post(
     try {
       const newComment = await Comment.create({
         ...req.body,
-        author: req.user._id,
       });
+      const parentPost = await Post.findById(req.body.parentPost);
+      parentPost.comments.push(newComment._id);
+      await parentPost.save();
       res.json(newComment);
     } catch (error) {
       console.log(error);

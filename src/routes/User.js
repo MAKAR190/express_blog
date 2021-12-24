@@ -39,7 +39,7 @@ router.get("/:userId", async (req, res) => {
     res.status(500).send(error);
   }
 });
-router.post("/:userId/follow", async (req, res) => {
+router.post("/:userId/follow", auth, async (req, res) => {
   try {
     const following = req.user.following.includes(req.params.userId);
     const followUser = await User.findById(req.params.userId);
@@ -50,6 +50,8 @@ router.post("/:userId/follow", async (req, res) => {
       req.user.following.addToSet(req.params.userId);
       followUser.followers.addToSet(req.user._id);
     }
+    await req.user.save();
+    await followUser.save();
     res.json({
       followUser: followUser,
     });

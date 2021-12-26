@@ -6,3 +6,6 @@ exports.create = yup.object().shape({
   parentComment: yup.string().optional(),
   likes: yup.number(),
 });
+exports.update = yup.object().shape({
+  text: yup.string().required(),
+});

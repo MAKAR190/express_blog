@@ -26,7 +26,7 @@ router.post(
 
 router.put(
   "/:commentId",
-  schemaValidate(commentValidate.create),
+  schemaValidate(commentValidate.update),
   auth,
   async (req, res) => {
     try {

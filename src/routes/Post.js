@@ -116,11 +116,26 @@ router.get("/:_id", async (req, res) => {
 router.put(
   "/:_id",
   auth,
-  schemaValidate(postValidate.update),
+  schemaValidate(postValidate.create),
   async (req, res) => {
     try {
       const post = await Post.findById(req.params._id);
+      const tagsArr = req.body.tags ? req.body.tags.split(", ") : [];
 
+      const existingTags = await Tag.find({
+        name: {
+          $in: tagsArr,
+        },
+      });
+
+      const filtredTags = tagsArr.filter((tagName) => {
+        return !existingTags.find((tag) => tag.name === tagName);
+      });
+      const newTags = await Tag.insertMany(
+        filtredTags.map((tagName) => ({
+          name: tagName,
+        }))
+      );
       if (post.author._id !== req.user._id) {
         res.status(403).json({ message: "Error 403" });
         return;
@@ -132,7 +147,7 @@ router.put(
           new: true,
         }
       );
-      res.json(editedPost);
+      res.json({ editedPost, newTags });
     } catch (error) {
       console.log(error);
       res.status(500).send(error);

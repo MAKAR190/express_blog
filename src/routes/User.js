@@ -3,7 +3,7 @@ const router = express.Router();
 const { getUser, postUser, updateUser, deleteUser } = require("../controllers");
 
 router.get("/:userId", getUser);
-router.get("/:userId/follow", postUser);
-router.get("/:userId", updateUser);
-router.get("/:userId", deleteUser);
+router.post("/:userId/follow", postUser);
+router.put("/:userId", updateUser);
+router.delete("/:userId", deleteUser);
 module.exports = router;

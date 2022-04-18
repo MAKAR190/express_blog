@@ -16,18 +16,20 @@ const Post = new Schema(
       required: true,
       min: 10,
     },
-    usersReading: {
-      type: Number,
-      required: true,
-      default: 0,
-      min: 0,
-    },
-    usersLiked: {
-      type: Number,
-      required: true,
-      default: 0,
-      min: 0,
-    },
+    usersReading: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
+      },
+    ],
+    usersLiked: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: false,
+      },
+    ],
     views: {
       type: Number,
       required: true,

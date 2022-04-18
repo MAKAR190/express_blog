@@ -3,12 +3,17 @@ const volleyball = require("volleyball");
 const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Postrouter = require("./routes/Post");
 const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
 const app = express();
 const { User } = require("./models");
-const { UserRoute, Auth } = require("./routes");
+const {
+  UserRoute,
+  Auth,
+  Postrouter,
+  Comments,
+  TagRouter,
+} = require("./routes");
 require("dotenv").config();
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -43,6 +48,8 @@ app.use(cors({ origin: "*" }));
 app.use("/auth", Auth);
 app.use("/users", UserRoute);
 app.use("/posts", Postrouter);
+app.use("/comments", Comments);
+app.use("/tags", TagRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });

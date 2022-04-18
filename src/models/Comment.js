@@ -1,4 +1,4 @@
-const { model, Schema } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const Comment = new Schema(
   {
@@ -10,7 +10,7 @@ const Comment = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
     parentPost: {
       type: Schema.Types.ObjectId,
@@ -25,6 +25,7 @@ const Comment = new Schema(
     likes: {
       type: Number,
       required: true,
+      default:0 
     },
   },
   {
@@ -32,4 +33,5 @@ const Comment = new Schema(
   }
 );
 
-module.exports = model("Comment", Comment);
+
+module.exports = model('Comment', Comment);

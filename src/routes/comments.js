@@ -1,5 +1,4 @@
 const express = require("express");
-const { Comment } = require("../models");
 const { auth, schemaValidate } = require("../middlewares");
 const router = express.Router();
 const { commentValidate } = require("../validationSchemas");
@@ -10,20 +9,20 @@ router.post(
   "/",
   schemaValidate(commentValidate.create),
   auth,
-  createComment()
+  createComment
 );
 
 router.put(
   "/:commentId",
   schemaValidate(commentValidate.update),
   auth,
-  editComment()
+  editComment
 );
 
 router.patch(
   "/:commentId/like",
    auth,
-  likeComment()
+  likeComment
 );
 
 router.delete(

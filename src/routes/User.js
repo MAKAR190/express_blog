@@ -103,7 +103,7 @@ router.get("/:userId/followers", auth, async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = User.findById(userId);
+    const user = await User.findById(userId);
 
     res.json({ followers: user.followers });
   } catch (error) {
@@ -116,7 +116,7 @@ router.get("/:userId/following", auth, async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = User.findById(userId);
+    const user = await User.findById(userId);
 
     res.json({ followers: user.following });
   } catch (error) {

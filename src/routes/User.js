@@ -6,4 +6,6 @@ router.get("/:userId", getUser);
 router.post("/:userId/follow", postUser);
 router.put("/:userId", updateUser);
 router.delete("/:userId", deleteUser);
+router.get("posts/:postId/likes");
+router.get("/posts/:postId/comments");
 module.exports = router;

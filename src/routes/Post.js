@@ -4,6 +4,7 @@ const { schemaValidate, auth } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
 const { Post } = require("../models");
 const { Tag } = require("../models");
+const { postUsersLikedController } = require("../controllers");
 
 router.get("/", async (req, res) => {
   try {

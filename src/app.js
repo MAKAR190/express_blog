@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
+const cloudinary = require("cloudinary").v2;
 const app = express();
 const { User } = require("./models");
 const {
@@ -13,13 +14,18 @@ const {
   Postrouter,
   Comments,
   TagRouter,
+  GalleryRouter
 } = require("./routes");
 require("dotenv").config();
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Database connected successfully"))
   .catch((error) => console.log(error));
-
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 passport.use(
   new Strategy(
     {
@@ -50,6 +56,7 @@ app.use("/users", UserRoute);
 app.use("/posts", Postrouter);
 app.use("/comments", Comments);
 app.use("/tags", TagRouter);
+app.use("/gallery", GalleryRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });

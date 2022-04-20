@@ -4,4 +4,5 @@ module.exports = {
   UserRoute: require("./User"),
   Postrouter: require("./Post"),
   TagRouter: require("./tags"),
+  GalleryRouter: require("./Gallery")
 };

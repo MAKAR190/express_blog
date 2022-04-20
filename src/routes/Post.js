@@ -4,7 +4,10 @@ const { schemaValidate, auth } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
 const { Post } = require("../models");
 const { Tag } = require("../models");
-const { postUsersLikedController } = require("../controllers");
+const {
+  postUsersLikedController,
+  postCommentsController,
+} = require("../controllers");
 
 router.get("/", async (req, res) => {
   try {
@@ -216,5 +219,7 @@ router.patch("/:_id/save", auth, async (req, res) => {
     res.status(500).send(error);
   }
 });
+router.get("/:postId/likes", postUsersLikedController);
+router.get("/:postId/comments", postCommentsController);
 
 module.exports = router;

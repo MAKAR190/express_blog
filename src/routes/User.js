@@ -99,4 +99,30 @@ router.delete("/:userId", auth, async (req, res) => {
   }
 });
 
+router.get("/:userId/followers", auth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = User.findById(userId);
+
+    res.json({ followers: user.followers });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.get("/:userId/following", auth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = User.findById(userId);
+
+    res.json({ followers: user.following });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

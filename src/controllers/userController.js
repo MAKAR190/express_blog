@@ -96,3 +96,115 @@ exports.getUser = async (req, res) => {
       res.status(500).send(error);
     }
   };
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId)
+      .populate({
+        path: "readingList",
+        populate: [
+          {
+            path: "author",
+          },
+          {
+            path: "tags",
+          },
+        ],
+      })
+      .populate("likedPosts")
+      .populate("likesComments")
+      .populate({
+        path: "posts",
+        populate: [
+          {
+            path: "author",
+          },
+          {
+            path: "tags",
+          },
+        ],
+      });
+    if (!user) {
+      res.status(404).json({ message: "Not found" });
+      return;
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+exports.searchUsers = async (req, res) => {
+  try {
+    let { search = "", perPage = 10, page = 1, sortBy, sortOrder } = req.query;
+    if (page === "") {
+      page = 1;
+    }
+    const users = await User.find(
+      {
+        username: {
+          $regex: search,
+          $options: "i",
+        },
+      } || {
+          email: {
+            $regex: search,
+            $options: "i",
+          },
+        } || {
+          firstName: {
+            $regex: search,
+            $options: "i",
+          },
+        } || {
+          lastName: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      null,
+      {
+        limit: Number(perPage),
+        skip: (Number(page) - 1) * Number(perPage),
+        sort: {
+          [sortBy]: Number(sortOrder),
+        },
+      }
+    );
+
+    const count = await User.countDocuments(
+      {
+        username: {
+          $regex: search,
+          $options: "i",
+        },
+      } || {
+          email: {
+            $regex: search,
+            $options: "i",
+          },
+        } || {
+          firstName: {
+            $regex: search,
+            $options: "i",
+          },
+        } || {
+          lastName: {
+            $regex: search,
+            $options: "i",
+          },
+        }
+    );
+
+    res.json({
+      users,
+      count: count,
+      activePage: Number(page),
+      perPage: Number(perPage),
+      pagesCount: Math.ceil(count / Number(perPage)),
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};

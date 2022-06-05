@@ -99,6 +99,17 @@ const User = new Schema(
         required: true,
       },
     ],
+    verificationToken: {
+      type: String,
+    },
+
+    email: {
+      type: String,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

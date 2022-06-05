@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const app = express();
 
-const { comments } = require('./routes');
+const { Comments } = require('./routes');
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -23,6 +23,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'Hello, World!' });
 });
 
-app.use('/api/comments', comments);
+app.use('/api/comments', Comments);
 
 module.exports = app;

@@ -13,6 +13,10 @@ const User = new Schema(
       required: true,
       min: 6,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -99,6 +103,16 @@ const User = new Schema(
         required: true,
       },
     ],
+    authToken: 
+      {
+        type: String,
+      },
+    verificated: 
+      {
+        type: Boolean,
+        default: false
+      },
+    
   },
   {
     timestamps: true,

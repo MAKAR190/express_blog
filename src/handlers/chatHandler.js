@@ -2,6 +2,12 @@ const Message = require("../models/Message");
 const Chat = require("../models/Chat");
 const { User } = require("../models");
 module.exports = (io, socket) => {
+  const joinChat = (chatId) => {
+    socket.join(chatId);
+  };
+  const leaveChat = (chatId) => {
+    socket.leave(chatId);
+  };
   const createMessage = async (body, chatId, senderId) => {
     const newMessage = await Message.create({
       body: body,
@@ -23,4 +29,6 @@ module.exports = (io, socket) => {
   };
   socket.on("message:create", createMessage);
   socket.on("chat:create", createChat);
+  socket.on("chat:join", joinChat);
+  socket.on("chat:leave", leaveChat);
 };

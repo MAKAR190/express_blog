@@ -99,6 +99,12 @@ const User = new Schema(
         required: true,
       },
     ],
+    chats: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "chat",
+      },
+    ],
   },
   {
     timestamps: true,

@@ -19,15 +19,30 @@ router.get("/", async (req, res) => {
       page = 1;
     }
 
+    const tagsIncludeArr = tagsInclude.split(", ");
+
+    const tagsExcludeArr = tagsExclude.split(", ");
+
     const posts = await Post.find(
       {
-        title: {
-          $regex: search,
-          $options: "i",
-        },
-        tags: {
-          $regex: tagsInclude,
-        },
+        $and: [
+          {
+            name: {
+              $in: tagsIncludeArr,
+            },
+          },
+          {
+            name: {
+              $nin: tagsExcludeArr,
+            },
+          },
+          {
+            name: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+        ],
       },
       null,
       {

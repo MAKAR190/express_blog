@@ -15,6 +15,7 @@ const User = new Schema(
     },
     email: {
       type: String,
+      unique: true,
       required: true,
     },
     firstName: {
@@ -103,16 +104,19 @@ const User = new Schema(
         required: true,
       },
     ],
-    authToken: 
+    chats: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "chat",
       },
-    verificated: 
-      {
-        type: Boolean,
-        default: false
-      },
-    
+    ],
+    authToken: {
+      type: String,
+    },
+    verificated: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

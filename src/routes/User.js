@@ -1,6 +1,6 @@
 const express = require("express");
-const { User } = require("../models");
 const router = express.Router();
+const userController = require("../controllers/userController");
 const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
 router.get("/:userId", async (req, res) => {
@@ -126,4 +126,9 @@ router.get("/:userId/following", auth, async (req, res) => {
   }
 });
 
+router.get("/", userController.searchUsers);
+router.get("/:userId", userController.getUser);
+router.post("/:userId/follow", userController.postUser);
+router.put("/:userId", userController.updateUser);
+router.delete("/:userId", userController.deleteUser);
 module.exports = router;

@@ -1,7 +1,9 @@
 const express = require("express");
 const { User } = require("../models");
+const cloudinary = require("cloudinary").v2;
 const jwt = require("jsonwebtoken");
 const { auth, schemaValidate } = require("../middlewares");
+const { upload } = require("../utils");
 const router = express.Router();
 const { userValidate } = require("../validationSchemas");
 const bcrypt = require("bcryptjs");
@@ -13,9 +15,11 @@ require('dotenv').config()
 
 router.post(
   "/register",
+  upload.single("avatar"),
   schemaValidate(userValidate.create),
   async (req, res) => {
     try {
+      const avatar = await cloudinary.uploader.upload(req.file.path);
       const { username } = req.body;
       const user = await User.findOne({ username });
       if (user) {
@@ -30,6 +34,7 @@ router.post(
         ...req.body,
         authToken: `m-${chance.integer({ min: 00000, max: 99999 })}`,
         password: hashedPassword,
+        avatarUrl: avatar.url,
       });
       
       const config = {

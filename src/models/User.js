@@ -105,6 +105,17 @@ const User = new Schema(
         ref: "chat",
       },
     ],
+    verificationToken: {
+      type: String,
+    },
+
+    email: {
+      type: String,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

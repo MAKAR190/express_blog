@@ -13,6 +13,11 @@ const User = new Schema(
       required: true,
       min: 6,
     },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -105,14 +110,10 @@ const User = new Schema(
         ref: "chat",
       },
     ],
-    verificationToken: {
+    authToken: {
       type: String,
     },
-
-    email: {
-      type: String,
-    },
-    isVerified: {
+    verificated: {
       type: Boolean,
       default: false,
     },

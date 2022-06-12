@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { schemaValidate, auth } = require("../middlewares");
+const { schemaValidate, auth, verifyEmail } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
 const { Post } = require("../models");
 const { Tag } = require("../models");
@@ -56,6 +56,7 @@ router.get("/", async (req, res) => {
 router.post(
   "/",
   auth,
+  verifyEmail,
   schemaValidate(postValidate.create),
   async (req, res) => {
     try {
@@ -119,6 +120,7 @@ router.get("/:_id", async (req, res) => {
 router.put(
   "/:_id",
   auth,
+  verifyEmail,
   schemaValidate(postValidate.create),
   async (req, res) => {
     try {
@@ -158,7 +160,7 @@ router.put(
   }
 );
 
-router.delete("/:_id", auth, async (req, res) => {
+router.delete("/:_id", auth, verifyEmail, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
     if (post.author._id !== req.user._id) {
@@ -173,7 +175,7 @@ router.delete("/:_id", auth, async (req, res) => {
   }
 });
 
-router.patch("/:_id/like", auth, async (req, res) => {
+router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
 
@@ -196,7 +198,7 @@ router.patch("/:_id/like", auth, async (req, res) => {
   }
 });
 
-router.patch("/:_id/save", auth, async (req, res) => {
+router.patch("/:_id/save", auth, verifyEmail, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
 

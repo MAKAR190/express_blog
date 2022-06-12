@@ -174,6 +174,7 @@ exports.searchUsers = async (req, res) => {
         { firstName: { $regex: search, $options: "i" } },
         { username: { $regex: search, $options: "i" } },
         { email: { $regex: search, $options: "i" } },
+        n,
       ],
     });
 

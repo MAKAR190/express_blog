@@ -1,7 +1,7 @@
 const express = require("express");
 const { User } = require("../models");
 const router = express.Router();
-const { auth, schemaValidate } = require("../middlewares");
+const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
 router.get("/:userId", async (req, res) => {
   try {
@@ -39,7 +39,7 @@ router.get("/:userId", async (req, res) => {
     res.status(500).send(error);
   }
 });
-router.post("/:userId/follow", auth, async (req, res) => {
+router.post("/:userId/follow", auth, verifyEmail, async (req, res) => {
   try {
     const following = req.user.following.includes(req.params.userId);
     const followUser = await User.findById(req.params.userId);
@@ -63,6 +63,7 @@ router.put(
   "/:userId",
   schemaValidate(userValidate.update),
   auth,
+  verifyEmail,
   async (req, res) => {
     try {
       if (req.user._id !== req.params.userId) {
@@ -82,7 +83,7 @@ router.put(
     }
   }
 );
-router.delete("/:userId", auth, async (req, res) => {
+router.delete("/:userId", auth, verifyEmail, async (req, res) => {
   try {
     if (req.user._id !== req.params.userId) {
       res.status(403).json({ message: "Error 403" });

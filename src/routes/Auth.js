@@ -47,8 +47,8 @@ router.post(
       const emailOptions = {
         from: 'd.oliynyk2007@meta.ua',
         to: newUser.email,
-        subject: 'Nodemailer test',
-        text: `TEST ${newUser.authToken}`,
+        subject: 'Lorem ipsum dolor sit amet',
+        html: `<h2>Hello</h2> <p>Invitation link: ${newUser.authToken} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem nisi, feugiat quis libero et, interdum bibendum elit. Pellentesque id ultrices urna. Nulla imperdiet dapibus mattis`,
       }
       
       transporter
@@ -78,22 +78,18 @@ router.post("/login", schemaValidate(userValidate.login), async (req, res) => {
       res.status(400).json({ message: "Invalid credentials" });
       return;
     }
+ 
+    const payload = {
+      _id: user._id,
+    };
 
-    if(user.verificated !== true){
-      return res.status(400).json({ message: "Please verificate your email" });
-    } else {
-      const payload = {
-        _id: user._id,
-      };
-  
-      const jwtToken = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
-      res.status(200).json({
-        user: user,
-        token: jwtToken,
-      });
-    }
+    const jwtToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    res.status(200).json({
+      user: user,
+      token: jwtToken,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
@@ -116,15 +112,58 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-router.get("/email_verification/:id", async (req, res) => {
-  const user = await User.findOne({authToken: req.params.id});
+router.get("/token/verificate/:authToken", async (req, res) => {
+  const user = await User.findOne({authToken: req.params.authToken});
   console.log(user)
   if(user){
     user.authToken = null;
     user.verificated = true;
     await user.save();
+    return res.json({'message': 'email verificated ok!'})
+  } else {
+    res.json({
+      'message': 'something is wrong!'
+    })
   }
   
-  res.json({'message': 'email verificated ok!'})
+})
+
+router.post("/token/resend/:id", async (req, res) => {
+  const user = await User.findById(req.params.id);
+  
+  if(!user.verificated){
+    const newToken = `m-${chance.integer({ min: 00000, max: 99999 })}`
+    user.authToken = newToken;
+    await user.save()
+    const config = {
+      host: 'smtp.meta.ua',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'd.oliynyk2007@meta.ua',
+        pass: process.env.NODE_MAILER_PASS,
+      },
+    }
+
+    const transporter = nodemailer.createTransport(config)
+    const emailOptions = {
+      from: 'd.oliynyk2007@meta.ua',
+      to: user.email,
+      subject: 'Lorem ipsum dolor sit amet',
+      html: `<h2>Hello</h2> <p>Invitation link: ${user.authToken} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem nisi, feugiat quis libero et, interdum bibendum elit. Pellentesque id ultrices urna. Nulla imperdiet dapibus mattis`,
+    }
+
+    transporter
+      .sendMail(emailOptions)
+      .catch((err) => console.log(err))
+
+    res.json({
+      'message': "token resend OK!"
+    })
+  } else {
+    return res.json({
+      'message': 'something is wrong!'
+    })
+  }
 })
 module.exports = router;

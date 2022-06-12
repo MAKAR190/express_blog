@@ -142,26 +142,17 @@ exports.searchUsers = async (req, res) => {
     }
     const users = await User.find(
       {
-        username: {
-          $regex: search,
-          $options: "i",
-        },
-      } || {
-          email: {
-            $regex: search,
-            $options: "i",
+        $or: [
+          {
+            lastName: {
+              $regex: search,
+              $options: "i",
+            },
           },
-        } || {
-          firstName: {
-            $regex: search,
-            $options: "i",
-          },
-        } || {
-          lastName: {
-            $regex: search,
-            $options: "i",
-          },
-        },
+          { firstName: { $regex: search, $options: "i" } },
+          { username: { $regex: search, $options: "i" } },
+        ],
+      },
       null,
       {
         limit: Number(perPage),
@@ -178,22 +169,28 @@ exports.searchUsers = async (req, res) => {
           $regex: search,
           $options: "i",
         },
-      } || {
-          email: {
-            $regex: search,
-            $options: "i",
-          },
-        } || {
-          firstName: {
-            $regex: search,
-            $options: "i",
-          },
-        } || {
-          lastName: {
-            $regex: search,
-            $options: "i",
-          },
-        }
+      }
+        ? false
+        : {
+            email: {
+              $regex: search,
+              $options: "i",
+            },
+          }
+        ? false
+        : {
+            firstName: {
+              $regex: search,
+              $options: "i",
+            },
+          }
+        ? false
+        : {
+            lastName: {
+              $regex: search,
+              $options: "i",
+            },
+          }
     );
 
     res.json({

@@ -163,35 +163,19 @@ exports.searchUsers = async (req, res) => {
       }
     );
 
-    const count = await User.countDocuments(
-      {
-        username: {
-          $regex: search,
-          $options: "i",
+    const count = await User.countDocuments({
+      $or: [
+        {
+          lastName: {
+            $regex: search,
+            $options: "i",
+          },
         },
-      }
-        ? false
-        : {
-            email: {
-              $regex: search,
-              $options: "i",
-            },
-          }
-        ? false
-        : {
-            firstName: {
-              $regex: search,
-              $options: "i",
-            },
-          }
-        ? false
-        : {
-            lastName: {
-              $regex: search,
-              $options: "i",
-            },
-          }
-    );
+        { firstName: { $regex: search, $options: "i" } },
+        { username: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+      ],
+    });
 
     res.json({
       users,

@@ -10,7 +10,7 @@ const Comment = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false,
     },
     parentPost: {
       type: Schema.Types.ObjectId,
@@ -34,4 +34,4 @@ const Comment = new Schema(
 );
 
 
-module.exports = model('comment', Comment);
+module.exports = model('Comment', Comment);

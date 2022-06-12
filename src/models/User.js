@@ -13,6 +13,11 @@ const User = new Schema(
       required: true,
       min: 6,
     },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -99,15 +104,36 @@ const User = new Schema(
         required: true,
       },
     ],
+    chats: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "chat",
+      },
+    ],
+    authToken: {
+      type: String,
+    },
+    verificated: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
-User.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 12);
+
+User.virtual("fullName").get(function () {
+  return this.firstName + " " + this.lastName;
 });
+
 User.methods.validatePassword = async function (password) {
-  return await bcrypt.compare(this.password, password);
+  return await bcrypt.compare(password, this.password);
 };
 module.exports = model("User", User);

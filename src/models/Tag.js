@@ -16,4 +16,4 @@ const Tag = new Schema(
   { timestamps: true }
 );
 
-module.exports = model("tag", Tag);
+module.exports = model("Tag", Tag);

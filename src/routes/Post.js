@@ -178,13 +178,13 @@ router.patch("/:_id/like", auth, async (req, res) => {
     const post = await Post.findById(req.params._id);
 
     if (req.user.likedPosts.includes(req.params._id)) {
-      post.usersLiked--;
+      post.usersLiked.pull(post._id);
 
       req.user.likedPosts.pull(post._id);
     } else {
-      post.usersLiked++;
+      post.usersLiked.addToSet(post._id);
 
-      req.user.likedPosts.push(post._id);
+      req.user.likedPosts.addToSet(post._id);
     }
     await post.save();
     await req.user.save();
@@ -201,13 +201,13 @@ router.patch("/:_id/save", auth, async (req, res) => {
     const post = await Post.findById(req.params._id);
 
     if (req.user.readingList.includes(req.params._id)) {
-      post.usersReading--;
+      post.usersReading.pull(post._id);
 
       req.user.readingList.pull(post._id);
     } else {
-      post.usersReading++;
+      post.usersReading.addToSet(post._id);
 
-      req.user.readingList.push(post._id);
+      req.user.readingList.addToSet(post._id);
     }
     await post.save();
     await req.user.save();

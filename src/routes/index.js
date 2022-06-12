@@ -1,3 +1,6 @@
 module.exports = {
-    Comments: require('./Comments'),
-}
+  Comments: require("./Comments"),
+  Auth: require("./Auth"),
+  UserRoute: require("./User"),
+  Postrouter: require("./Post"),
+};

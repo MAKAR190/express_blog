@@ -14,6 +14,9 @@ module.exports = (io, socket) => {
       chat: chatId,
       sender: senderId,
     });
+    const chat = await Chat.findById(chatId);
+    chat.messages.addToSet(newMessage.id);
+    await chat.save();
     io.to(chatId).emit("message created", newMessage);
   };
   const createChat = async (receiverId, senderId) => {
@@ -27,8 +30,19 @@ module.exports = (io, socket) => {
     await receiver.save();
     await sender.save();
   };
+  const typing = async (chatId) => {
+    io.to(chatId).emit("typing");
+  };
+  const themeChange = async (chatId, theme) => {
+    const chat = await Chat.findById(chatId);
+    chat.theme = theme;
+    await chat.save();
+    io.to(chatId).emit("theme:change", theme);
+  };
   socket.on("message:create", createMessage);
   socket.on("chat:create", createChat);
   socket.on("chat:join", joinChat);
+  socket.on("typing", typing);
+  socket.on("theme:change", themeChange);
   socket.on("chat:leave", leaveChat);
 };

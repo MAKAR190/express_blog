@@ -91,7 +91,7 @@ router.post(
       req.user.posts.push(newPost._id);
       await req.user.save();
 
-      res.json({ newTags, newPost });
+      res.status(201).json(newPost);
     } catch (error) {
       console.log(error);
       res.status(500).send(error);

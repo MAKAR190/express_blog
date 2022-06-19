@@ -1,8 +1,11 @@
 const express = require("express");
-const router = express.Router();
 const userController = require("../controllers/userController");
 const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
+const { User } = require("../models");
+
+const router = express.Router();
+
 router.get("/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)

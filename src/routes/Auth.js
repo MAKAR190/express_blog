@@ -10,7 +10,7 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 const chance = require("chance").Chance();
-
+const fs = require("fs");
 require("dotenv").config();
 
 router.post(

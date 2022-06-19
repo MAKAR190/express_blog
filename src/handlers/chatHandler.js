@@ -29,6 +29,7 @@ module.exports = (io, socket) => {
     sender.chats.addToSet(newChat);
     await receiver.save();
     await sender.save();
+    io.to([receiverId, senderId]).emit("chat:create", newChat);
   };
   const typing = async (chatId) => {
     io.to(chatId).emit("typing");

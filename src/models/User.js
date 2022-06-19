@@ -110,6 +110,12 @@ const User = new Schema(
         ref: "chat",
       },
     ],
+    notifications: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
     authToken: {
       type: String,
     },

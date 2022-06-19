@@ -3,6 +3,8 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
+const { User } = require("../models");
+
 router.get("/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)
@@ -125,6 +127,13 @@ router.get("/:userId/following", auth, async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+router.get("/notifications", auth, async (req, res) => {
+  console.log(req.user._id)
+  const user = await User.findById(req.user._id);
+      
+  return res.json(user)
+})
 
 router.get("/", userController.searchUsers);
 router.get("/:userId", userController.getUser);

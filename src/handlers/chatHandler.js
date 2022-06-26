@@ -30,10 +30,14 @@ module.exports = (io, socket) => {
     await receiver.save();
     await sender.save();
     io.to([receiverId, senderId]).emit("chat:create", newChat);
-    cb(newChat)
+    cb(newChat);
   };
   const typing = async (chatId) => {
     io.to(chatId).emit("typing");
+  };
+  const getChats = async (userId) => {
+    const user = await User.findById(userId);
+    io.to(userId).emit("chat:all", user.chats);
   };
   const themeChange = async (chatId, theme) => {
     const chat = await Chat.findById(chatId);
@@ -47,4 +51,5 @@ module.exports = (io, socket) => {
   socket.on("typing", typing);
   socket.on("theme:change", themeChange);
   socket.on("chat:leave", leaveChat);
+  socket.on("chat:all", getChats);
 };

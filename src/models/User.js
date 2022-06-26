@@ -90,6 +90,13 @@ const User = new Schema(
         required: true,
       },
     ],
+    likedTags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Tag",
+        required: true,
+      },
+    ],
     likesComments: [
       {
         type: Schema.Types.ObjectId,

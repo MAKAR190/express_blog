@@ -78,6 +78,10 @@ router.post(
         }))
       );
 
+      
+      
+      
+      
       const newPost = await Post.create({
         title: req.body.title,
         tags: tagsArr ? [...existingTags, ...newTags] : [],
@@ -88,7 +92,20 @@ router.post(
         views: req.body.views,
         body: req.body.body,
       });
-
+      
+      const new_notify = await Notification.create({
+        user: req.user._id,
+        entity: newPost._id,
+        type: "Post",
+        action: "CREATE"
+      });
+      
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+          notifications: new_notify._id
+        }
+      })
+      
       req.user.posts.push(newPost._id);
       await req.user.save();
 

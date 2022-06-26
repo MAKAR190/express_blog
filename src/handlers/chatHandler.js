@@ -35,9 +35,13 @@ module.exports = (io, socket) => {
   const typing = async (chatId) => {
     io.to(chatId).emit("typing");
   };
-  const getChats = async (userId) => {
-    const user = await User.findById(userId);
+  const getChats = async (userId, cb) => {
+    const user = await User.findById(userId).populate({
+      path: "chats",
+      populate: [{ path: "users" }, { path: "messages" }],
+    });
     io.to(userId).emit("chat:all", user.chats);
+    cb(user.chats);
   };
   const themeChange = async (chatId, theme) => {
     const chat = await Chat.findById(chatId);

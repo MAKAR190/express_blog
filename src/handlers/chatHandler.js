@@ -22,22 +22,18 @@ module.exports = (io, socket) => {
   const createChat = async (receiverId, senderId, cb) => {
     const receiver = await User.findById(receiverId);
     const sender = await User.findById(senderId);
-    const chat = await Chat.findOne({ users: [receiverId, senderId] }).populate(
-      {
-        path: "chats",
-        populate: [{ path: "users" }, { path: "messages" }],
-      }
-    );
+    const chat = await Chat.findOne({ users: [receiverId, senderId] })
+      .populate("users")
+      .populate("messages");
     if (chat) {
       cb(chat);
       return;
     }
     const newChat = await Chat.create({
       users: [receiverId, senderId],
-    }).populate({
-      path: "chats",
-      populate: [{ path: "users" }, { path: "messages" }],
-    });
+    })
+      .populate("users")
+      .populate("messages");
 
     receiver.chats.addToSet(newChat);
     sender.chats.addToSet(newChat);

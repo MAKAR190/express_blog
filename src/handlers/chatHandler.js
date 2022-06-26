@@ -20,11 +20,25 @@ module.exports = (io, socket) => {
     io.to(chatId).emit("message:create", newMessage);
   };
   const createChat = async (receiverId, senderId, cb) => {
-    const newChat = await Chat.create({
-      users: [receiverId, senderId],
-    });
     const receiver = await User.findById(receiverId);
     const sender = await User.findById(senderId);
+    const chat = await Chat.findOne({ users: [receiverId, senderId] }).populate(
+      {
+        path: "chats",
+        populate: [{ path: "users" }, { path: "messages" }],
+      }
+    );
+    if (chat) {
+      cb(chat);
+      return;
+    }
+    const newChat = await Chat.create({
+      users: [receiverId, senderId],
+    }).populate({
+      path: "chats",
+      populate: [{ path: "users" }, { path: "messages" }],
+    });
+
     receiver.chats.addToSet(newChat);
     sender.chats.addToSet(newChat);
     await receiver.save();

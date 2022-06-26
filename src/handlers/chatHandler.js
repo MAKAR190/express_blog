@@ -53,6 +53,13 @@ module.exports = (io, socket) => {
     io.to(userId).emit("chat:all", user.chats);
     cb(user.chats);
   };
+  const getMessages = async (chatId, cb) => {
+    const chat = await Chat.findById(chatId).populate({
+      path: "messages",
+    });
+    io.to(userId).emit("messages:all", chat.messages);
+    cb(chat.messages);
+  };
   const themeChange = async (chatId, theme) => {
     const chat = await Chat.findById(chatId);
     chat.theme = theme;
@@ -66,4 +73,5 @@ module.exports = (io, socket) => {
   socket.on("theme:change", themeChange);
   socket.on("chat:leave", leaveChat);
   socket.on("chat:all", getChats);
+  socket.on("messages:all", getMessages);
 };

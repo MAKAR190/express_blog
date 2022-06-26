@@ -9,15 +9,16 @@ module.exports = (io, socket) => {
     socket.leave(chatId);
   };
   const createMessage = async (body, chatId, senderId) => {
-    const newMessage = await Message.create({
-      body: body,
-      chat: chatId,
-      sender: senderId,
-    });
-    const chat = await Chat.findById(chatId);
-    chat.messages.addToSet(newMessage.id);
-    await chat.save();
-    io.to(chatId).emit("message:create", newMessage);
+    // const newMessage = await Message.create({
+    //   body: body,
+    //   chat: chatId,
+    //   sender: senderId,
+    // });
+    // const chat = await Chat.findById(chatId);
+    // chat.messages.addToSet(newMessage.id);
+    // await chat.save();
+    // io.to(chatId).emit("message:create", newMessage);
+    io.emit("message:create", "Text");
   };
   const createChat = async (receiverId, senderId, cb) => {
     const receiver = await User.findById(receiverId);
@@ -57,7 +58,6 @@ module.exports = (io, socket) => {
     const chat = await Chat.findById(chatId).populate({
       path: "messages",
     });
-    io.to(chatId).emit("messages:all", chat.messages);
     cb(chat.messages);
   };
   const themeChange = async (chatId, theme) => {

@@ -57,7 +57,7 @@ module.exports = (io, socket) => {
     const chat = await Chat.findById(chatId).populate({
       path: "messages",
     });
-    io.to(userId).emit("messages:all", chat.messages);
+    io.to(chatId).emit("messages:all", chat.messages);
     cb(chat.messages);
   };
   const themeChange = async (chatId, theme) => {

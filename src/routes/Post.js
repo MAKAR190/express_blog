@@ -15,10 +15,10 @@ router.get("/", async (req, res) => {
       search = "",
       perPage = 10,
       page = 1,
-      sortBy,
-      sortOrder,
-      tagsInclude,
-      tagsExclude,
+      sortBy = "usersLiked",
+      sortOrder = -1,
+      tagsInclude = "",
+      tagsExclude = "",
     } = req.query;
     if (page === "") {
       page = 1;

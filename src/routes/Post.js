@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { schemaValidate, auth, verifyEmail } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
-const { Post, Tag, User } = require("../models");
+const { User, Post, Tag, Notification } = require("../models");
+
 const postUsersLikedController = require("../controllers/postLikesController");
 
 const postCommentsController = require("../controllers/postCommentsController");
+const { isErrored } = require("nodemailer/lib/xoauth2");
 
 router.get("/", async (req, res) => {
   try {
@@ -146,6 +148,19 @@ router.post(
         body: req.body.body,
       });
 
+      const new_notify = await Notification.create({
+        user: req.user._id,
+        entity: newPost._id,
+        type: "Post",
+        action: "CREATE",
+      });
+
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+          notifications: new_notify._id,
+        },
+      });
+
       req.user.posts.push(newPost._id);
       await req.user.save();
 
@@ -236,6 +251,10 @@ router.delete("/:_id", auth, verifyEmail, async (req, res) => {
 router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
+    const user_sender = req.user._id;
+
+    // console.log(obj_receiver);
+    // console.log(user_sender)
     if (req.user.likedPosts.includes(req.params._id)) {
       post.usersLiked.pull(post._id);
 
@@ -263,6 +282,18 @@ router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
           );
         }
       }
+      const new_notify = await Notification.create({
+        user: user_sender,
+        entity: req.params._id,
+        type: "Post",
+        action: "LIKE",
+      });
+
+      await User.findByIdAndUpdate(post.author, {
+        $push: {
+          notifications: new_notify._id,
+        },
+      });
     }
     await post.save();
     res.json(post);

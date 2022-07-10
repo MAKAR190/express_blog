@@ -1,10 +1,23 @@
-const { Comment } = require("../models");
+const { Comment, Notification, User, Post } = require("../models");
 
 async function createComment(req, res) {
   try {
     const newComment = await Comment.create({
       ...req.body,
     });
+    const new_notify = await Notification.create({
+      user: req.user._id,
+      entity: newComment._id,
+      type: "Comment",
+      action: "CREATE"
+    });
+    
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: {
+        notifications: new_notify._id
+      }
+    })
+    
     const parentPost = await Post.findById(req.body.parentPost);
     parentPost.comments.push(newComment._id);
     await parentPost.save();

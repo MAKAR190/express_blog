@@ -18,6 +18,7 @@ module.exports = (io, socket) => {
     // chat.messages.addToSet(newMessage.id);
     // await chat.save();
     // io.to(chatId).emit("message:create", newMessage);
+    console.log(body, chatId, senderId);
     io.emit("message:create", "Text");
   };
   const createChat = async (receiverId, senderId, cb) => {

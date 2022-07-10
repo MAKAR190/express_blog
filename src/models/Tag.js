@@ -6,6 +6,12 @@ const Tag = new Schema(
       type: String,
       required: true,
     },
+    views: {
+      type: Number,
+    },
+    popularity: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { schemaValidate, auth, verifyEmail } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
-const { Post } = require("../models");
-const { Tag } = require("../models");
+const { Post, Tag, User } = require("../models");
 const postUsersLikedController = require("../controllers/postLikesController");
 
 const postCommentsController = require("../controllers/postCommentsController");
@@ -38,6 +37,39 @@ router.get("/", async (req, res) => {
         $regex: search,
         $options: "i",
       },
+    });
+
+    res.json({
+      posts,
+      count: count,
+      activePage: Number(page),
+      perPage: Number(perPage),
+      pagesCount: Math.ceil(count / Number(perPage)),
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.get("/recommended", auth, async (req, res) => {
+  try {
+    let { perPage = 10, page = 1 } = req.query;
+    if (page === "") {
+      page = 1;
+    }
+
+    const posts = await Post.find({ tags: { $in: req.user.likedTags } }, null, {
+      limit: Number(perPage),
+      skip: (Number(page) - 1) * Number(perPage),
+      sort: {
+        usersLiked: -1,
+      },
+    })
+      .populate("author")
+      .populate("tags");
+    const count = await Post.countDocuments({
+      tags: { $in: req.user.likedTags },
     });
 
     res.json({
@@ -178,19 +210,35 @@ router.delete("/:_id", auth, verifyEmail, async (req, res) => {
 router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
-
     if (req.user.likedPosts.includes(req.params._id)) {
       post.usersLiked.pull(post._id);
 
-      req.user.likedPosts.pull(post._id);
+      req.user = await User.findByIdAndUpdate(
+        { _id: req.user._id },
+        {
+          $pullAll: {
+            likedTags: post.tags,
+          },
+          $pull: { likedPosts: post._id },
+        }
+      );
     } else {
       post.usersLiked.addToSet(post._id);
-
       req.user.likedPosts.addToSet(post._id);
+
+      req.user.likedTags.addToSet(...post.tags);
+      await req.user.save();
+      if (req.user.likedTags.length > 10) {
+        for (let i = 0; i <= req.user.likedTags.length - 10; i++) {
+          req.user = await User.findByIdAndUpdate(
+            req.user._id,
+            { $pop: { likedTags: -1 } },
+            { new: true }
+          );
+        }
+      }
     }
     await post.save();
-    await req.user.save();
-
     res.json(post);
   } catch (error) {
     console.log(error);

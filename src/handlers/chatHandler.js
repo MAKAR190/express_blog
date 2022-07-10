@@ -50,7 +50,15 @@ module.exports = (io, socket) => {
   const getChats = async (userId, cb) => {
     const user = await User.findById(userId).populate({
       path: "chats",
-      populate: [{ path: "users" }, { path: "messages" }],
+      populate: [
+        { path: "users" },
+        {
+          path:"messages",
+          populate: {
+            path: "sender",
+          },
+        },
+      ],
     });
     io.to(userId).emit("chat:all", user.chats);
     cb(user.chats);

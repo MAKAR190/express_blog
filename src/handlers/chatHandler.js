@@ -13,7 +13,8 @@ module.exports = (io, socket) => {
       body: body,
       chat: chatId,
       sender: senderId,
-    }).populate("sender");
+    });
+    await newMessage.populate("sender");
     const chat = await Chat.findById(chatId);
     chat.messages.addToSet(newMessage.id);
     await chat.save();

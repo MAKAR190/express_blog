@@ -63,14 +63,17 @@ module.exports = (io, socket) => {
     io.to(userId).emit("chat:all", user.chats);
     cb(user.chats);
   };
-  const getMessages = async (chatId, cb) => {
-    const chat = await Chat.findById(chatId).populate({
-      path: "messages",
-      populate: {
-        path: "sender",
+  const getMessages = async (chatId, userId, cb) => {
+    const messages = await Message.updateMany(
+      {
+        chatId: chatId,
+        sender: { $not: userId },
+        read: false,
       },
-    });
-    cb(chat.messages);
+      { read: true },
+      { new: true }
+    ).populate("sender");
+    cb(messages);
   };
   const updateMessage = async (chatId, messageId) => {
     const message = await Message.findByIdAndUpdate(

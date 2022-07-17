@@ -71,7 +71,7 @@ module.exports = (io, socket) => {
         read: false,
       },
       { read: true },
-      { new: true }
+      { new: true, rawResult: false }
     ).populate("sender");
     cb(messages);
   };

@@ -1,0 +1,18 @@
+{
+    
+    "/gallery": {
+        "post": {
+          "description": "gallery",
+          "responses": {
+            "500": {
+              "description": "Common error",
+              "content": {}
+            },
+            "200": {
+              "description": "Success",
+              "content": {}
+            }
+          }
+        }
+      }
+}

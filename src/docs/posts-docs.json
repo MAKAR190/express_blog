@@ -1,0 +1,732 @@
+{  "/posts": {
+    "get": {
+      "description": "Get posts",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Post 1"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "body 1"
+                  },
+                  "views": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "example": "www.photo.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "61ed31eedacddd4d88b1daf6"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/posts/recomended": {
+    "post": {
+      "description": "Get recomended posts",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Post 1"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "body 1"
+                  },
+                  "views": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "example": "www.photo.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "61ed31eedacddd4d88b1daf6"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/posts/": {
+    "post": {
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Post 1"
+                },
+                "body": {
+                  "type": "string",
+                  "example": "body 1"
+                },
+                "views": {
+                  "type": "number",
+                  "example": 20
+                },
+                "thumbnailUrl": {
+                  "type": "string",
+                  "example": "www.photo.com"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-01-23T10:46:06.831Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-01-23T10:46:06.831Z"
+                },
+                "_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "61ed31eedacddd4d88b1daf6"
+                }
+              },
+              "required": ["title", "body"]
+            }
+          }
+        }
+      },
+      "description": "Post",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Post 1"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "body 1"
+                  },
+                  "views": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "example": "www.photo.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "61ed31eedacddd4d88b1daf6"
+                  }
+                },
+                "required": ["title", "body"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/posts/{_id}": {
+    "get": {
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Post 1"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "body 1"
+                  },
+                  "views": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "example": "www.photo.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "61ed31eedacddd4d88b1daf6"
+                  }
+                },
+                "required": ["title", "body"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Post 1"
+                },
+                "body": {
+                  "type": "string",
+                  "example": "body 1"
+                },
+                "views": {
+                  "type": "number",
+                  "example": 20
+                },
+                "thumbnailUrl": {
+                  "type": "string",
+                  "example": "www.photo.com"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-01-23T10:46:06.831Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-01-23T10:46:06.831Z"
+                },
+                "_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "example": "61ed31eedacddd4d88b1daf6"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Post 1"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "body 1"
+                  },
+                  "views": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "example": "www.photo.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "61ed31eedacddd4d88b1daf6"
+                  }
+                },
+                "required": ["title", "body"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string",
+            "example": "Done"
+          },
+          "required": true
+        }
+      ],
+      "description": "",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/posts/{id}/like": {
+    "post": {
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string",
+            "example": "Done"
+          },
+          "required": true
+        }
+      ],
+      "description": "Like post",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Post 1"
+                  },
+                  "body": {
+                    "type": "string",
+                    "example": "body 1"
+                  },
+                  "views": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "thumbnailUrl": {
+                    "type": "string",
+                    "example": "www.photo.com"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2022-01-23T10:46:06.831Z"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "61ed31eedacddd4d88b1daf6"
+                  }
+                },
+                "required": ["title", "body"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/posts/{id}/save": {
+    "post": {
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Save post",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "Done"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/posts/{postId}/likes": {
+    "post": {
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Get post likes",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "John_Doe"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "qwer123"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "john@mail.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "Ukraine"
+                    },
+                    "githubUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://github.com/MihailLadyk"
+                    },
+                    "avatarUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Desription 1"
+                    },
+                    "work": {
+                      "type": "string",
+                      "example": "Web developer"
+                    },
+                    "hobby": {
+                      "type": "string",
+                      "example": "Coding"
+                    },
+                    "birthDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    },
+
+                    "following": {
+                      "type": "string",
+                      "example": "ref user"
+                    },
+                    "followers": {
+                      "type": "string",
+                      "example": "ref user"
+                    },
+                    "readingList": {
+                      "type": "string",
+                      "example": "ref post"
+                    },
+                    "likedPosts": {
+                      "type": "string",
+                      "example": "ref post"
+                    },
+                    "likedTags": {
+                      "type": "string",
+                      "example": "ref tags"
+                    },
+                    "likedComments": {
+                      "type": "string",
+                      "example": "ref comments"
+                    },
+                    "posts": {
+                      "type": "string",
+                      "example": "ref post"
+                    },
+                    "chats": {
+                      "type": "string",
+                      "example": "ref chat"
+                    },
+
+                    "authToken": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "verificated": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "61ed31eedacddd4d88b1daf6"
+                    }
+                  },
+                  "required": ["title", "body"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/posts/{postId}/comments": {
+    "post": {
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Get post likes",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "example": "John_Doe"
+                    },
+                    "likes": {
+                      "type": "number",
+                      "example": 30
+                    },
+                    "author": {
+                      "type": "string",
+                      "example": "ref user"
+                    },
+                    "parentPost": {
+                      "type": "string",
+                      "example": "ref post"
+                    },
+                    "parentComment": {
+                      "type": "string",
+                      "example": "ref comment"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "61ed31eedacddd4d88b1daf6"
+                    }
+                  },
+                  "required": ["title", "body"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }}

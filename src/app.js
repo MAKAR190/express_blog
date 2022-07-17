@@ -8,6 +8,14 @@ const { ExtractJwt, Strategy } = require("passport-jwt");
 const cloudinary = require("cloudinary").v2;
 const app = express();
 const { User } = require("./models");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./docs/main.json");
+const authDocs = require("./docs/auth-docs.json");
+const commentsDocs = require("./docs/comments-docs.json");
+const galleryDocs = require("./docs/gallery-docs.json");
+const tagsDocs = require("./docs/tags-docs.json");
+const postsDocs = require("./docs/posts-docs.json");
+const userDocs = require("./docs/user-docs.json");
 const http = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(http, {
@@ -58,7 +66,14 @@ passport.use(
     }
   )
 );
-
+swaggerDocument.paths = {
+  ...authDocs,
+  ...commentsDocs,
+  ...galleryDocs,
+  ...tagsDocs,
+  ...postsDocs,
+};
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json());
 app.use(volleyball);
 app.use(helmet());

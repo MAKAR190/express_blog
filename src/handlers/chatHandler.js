@@ -72,6 +72,23 @@ module.exports = (io, socket) => {
     });
     cb(chat.messages);
   };
+  const updateMessages = async (chatId, cb) => {
+    const chat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        messages: {
+          read: true,
+        },
+      },
+      { new: true }
+    ).populate({
+      path: "messages",
+      populate: {
+        path: "sender",
+      },
+    });
+    cb(chat.messages);
+  };
   const themeChange = async (chatId, theme) => {
     const chat = await Chat.findById(chatId);
     chat.theme = theme;
@@ -86,4 +103,5 @@ module.exports = (io, socket) => {
   socket.on("chat:leave", leaveChat);
   socket.on("chat:all", getChats);
   socket.on("messages:all", getMessages);
+  socket.on("messages:read", updateMessages);
 };

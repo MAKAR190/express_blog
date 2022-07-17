@@ -67,7 +67,7 @@ module.exports = (io, socket) => {
     const messages = await Message.updateMany(
       {
         chatId: chatId,
-        sender: { $not: userId },
+        $not: { sender: userId },
         read: false,
       },
       { read: true },

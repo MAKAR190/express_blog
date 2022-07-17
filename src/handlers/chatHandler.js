@@ -53,7 +53,7 @@ module.exports = (io, socket) => {
       populate: [
         { path: "users" },
         {
-          path:"messages",
+          path: "messages",
           populate: {
             path: "sender",
           },
@@ -66,6 +66,9 @@ module.exports = (io, socket) => {
   const getMessages = async (chatId, cb) => {
     const chat = await Chat.findById(chatId).populate({
       path: "messages",
+      populate: {
+        path: "sender",
+      },
     });
     cb(chat.messages);
   };

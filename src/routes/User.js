@@ -1,12 +1,14 @@
 const express = require("express");
 const userController = require("../controllers/userController");
-const router = express.Router();
+
 const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
 const { User, Post, Tag, Notification } = require("../models");
 
+const router = express.Router();
+
 router.get("/notifications", auth, async (req, res) => {
-  console.log(req.user._id)
+  console.log(req.user._id);
   const user = await User.findByzId(req.user._id).populate({
     path: "notifications",
     populate: [
@@ -18,9 +20,9 @@ router.get("/notifications", auth, async (req, res) => {
       },
     ],
   });
-      
-  return res.json(user.notifications)
-})
+
+  return res.json(user.notifications);
+});
 
 router.get("/:userId", async (req, res) => {
   try {
@@ -63,8 +65,6 @@ router.post("/:userId/follow", auth, verifyEmail, async (req, res) => {
     const following = req.user.following.includes(req.params.userId);
     const followUser = await User.findById(req.params.userId);
 
-    
-    
     if (following) {
       req.user.following.pull(req.params.userId);
       followUser.followers.pull(req.user._id);
@@ -73,14 +73,14 @@ router.post("/:userId/follow", auth, verifyEmail, async (req, res) => {
         user: req.user._id,
         entity: followUser._id,
         type: "User",
-        action: "FOLLOW"
+        action: "FOLLOW",
       });
-      
+
       await User.findByIdAndUpdate(followUser._id, {
         $push: {
-          notifications: new_notify._id
-        }
-      })
+          notifications: new_notify._id,
+        },
+      });
       req.user.following.addToSet(req.params.userId);
       followUser.followers.addToSet(req.user._id);
     }

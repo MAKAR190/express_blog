@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+
 const { schemaValidate, auth, verifyEmail } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
 const { User, Post, Tag, Notification } = require("../models");
@@ -8,6 +8,8 @@ const postUsersLikedController = require("../controllers/postLikesController");
 
 const postCommentsController = require("../controllers/postCommentsController");
 const { isErrored } = require("nodemailer/lib/xoauth2");
+
+const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {

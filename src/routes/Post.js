@@ -11,17 +11,43 @@ const { isErrored } = require("nodemailer/lib/xoauth2");
 
 router.get("/", async (req, res) => {
   try {
-    let { search = "", perPage = 10, page = 1, sortBy, sortOrder } = req.query;
+    let {
+      search = "",
+      perPage = 10,
+      page = 1,
+      sortBy,
+      sortOrder,
+      tagsInclude,
+      tagsExclude,
+    } = req.query;
     if (page === "") {
       page = 1;
     }
 
+    const tagsIncludeArr = tagsInclude.split(", ");
+
+    const tagsExcludeArr = tagsExclude.split(", ");
+
     const posts = await Post.find(
       {
-        title: {
-          $regex: search,
-          $options: "i",
-        },
+        $and: [
+          {
+            name: {
+              $in: tagsIncludeArr,
+            },
+          },
+          {
+            name: {
+              $nin: tagsExcludeArr,
+            },
+          },
+          {
+            name: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+        ],
       },
       null,
       {

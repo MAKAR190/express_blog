@@ -7,6 +7,7 @@ const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
 const cloudinary = require("cloudinary").v2;
 const app = express();
+
 const { User } = require("./models");
 const http = require("http").createServer(app);
 const { Server } = require("socket.io");
@@ -72,7 +73,6 @@ app.use("/users", UserRoute);
 app.use("/posts", Postrouter);
 app.use("/comments", Comments);
 app.use("/tags", TagRouter);
-app.use("/gallery", GalleryRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });

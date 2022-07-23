@@ -1,5 +1,5 @@
 module.exports = {
-  Comments: require("./comments"),
+  Comments: require("./Comments"),
   Auth: require("./Auth"),
   UserRoute: require("./User"),
   Postrouter: require("./Post"),

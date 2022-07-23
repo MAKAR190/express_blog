@@ -1,6 +1,6 @@
 const express = require("express");
-const router = express.Router();
 const userController = require("../controllers/userController");
+const router = express.Router();
 const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
 const { User, Post, Tag, Notification } = require("../models");

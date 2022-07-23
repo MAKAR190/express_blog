@@ -48,11 +48,14 @@ router.post(
       const emailOptions = {
         from: "d.oliynyk2007@meta.ua",
         to: newUser.email,
-        subject: "Lorem ipsum dolor sit amet",
-        html: `<h2>Hello</h2> <p>Invitation link: ${newUser.authToken} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem nisi, feugiat quis libero et, interdum bibendum elit. Pellentesque id ultrices urna. Nulla imperdiet dapibus mattis`,
-      };
-
-      transporter.sendMail(emailOptions).catch((err) => console.log(err));
+        subject: 'Express Blog Auth Token',
+        html: `<h2>Hello</h2> <p>Invitation link: ${newUser.authToken}</p> <p>Hello! This is auth token for your new account in 'express-blog'</p> <p>Have a Good Day!</p>`,
+      }
+      
+      transporter
+      .sendMail(emailOptions)
+      .catch((err) => console.log(err))
+      
 
       const payload = {
         _id: newUser._id,

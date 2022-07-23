@@ -73,7 +73,9 @@ module.exports = (io, socket) => {
       { read: true },
       { new: true, rawResult: false }
     );
-    const updatedMessages = await Message.find({ chatId: chatId }).populate("sender");
+    const updatedMessages = await Message.find({ chatId: chatId }).populate(
+      "sender"
+    );
     cb(updatedMessages);
   };
   const updateMessage = async (chatId, messageId) => {
@@ -82,7 +84,7 @@ module.exports = (io, socket) => {
       { read: true },
       { new: true }
     ).populate("sender");
-    io.to(chatId).emit("messages:read", message);
+    io.to(chatId).emit("messages:read", [message]);
   };
   const themeChange = async (chatId, theme) => {
     const chat = await Chat.findById(chatId);

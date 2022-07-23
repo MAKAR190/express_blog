@@ -33,4 +33,4 @@ const Chat = new Schema(
 Chat.virtual("lastMessage").get(function () {
   return this.messages[this.messages.length - 1];
 });
-module.exports = model("chat", Chat);
+module.exports = model("Chat", Chat);

@@ -72,38 +72,19 @@
           "bearerAuth": []
         }
       ],
-      "requestBody": {
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Post 1"
-                },
-                "body": {
-                  "type": "string",
-                  "example": "body 1"
-                },
-                "tags": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Tag"
-                  }
-                },
-
-                "thumbnailUrl": {
-                  "type": "string",
-                  "example": "www.photo.com"
-                }
-              },
-              "required": ["title", "body"]
-            }
-          }
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
         }
-      },
-      "description": "Post a post",
+      ],
+
+      "description": "Follow",
       "responses": {
         "500": {
           "description": "Common error",
@@ -134,7 +115,7 @@
                 "properties": {
                   "post": {
                     "type": "object",
-                    "$ref": "#/components/schemas/Post"
+                    "$ref": "#/components/schemas/User"
                   }
                 }
               }

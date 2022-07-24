@@ -114,7 +114,7 @@ const User = new Schema(
     chats: [
       {
         type: Schema.Types.ObjectId,
-        ref: "chat",
+        ref: "Chat",
       },
     ],
     notifications: [

@@ -15,8 +15,280 @@
       "description": "Production server"
     }
   ],
-  "paths": {
-  
-  
-  }
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "autuentication"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "John_Doe"
+          },
+          "password": {
+            "type": "string",
+            "example": "qwer123"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@mail.com"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "location": {
+            "type": "string",
+            "example": "Ukraine"
+          },
+          "githubUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://github.com/MihailLadyk"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"
+          },
+          "description": {
+            "type": "string",
+            "example": "Desription 1"
+          },
+          "work": {
+            "type": "string",
+            "example": "Web developer"
+          },
+          "hobby": {
+            "type": "string",
+            "example": "Coding"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+
+          "following": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "User"
+            }
+          },
+          "followers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "User"
+            }
+          },
+          "readingList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "likedPosts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "likedTags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "likedComments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "posts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "chats": {
+            "type": "string",
+            "example": "ref chat"
+          },
+
+          "verificated": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "61ed31eedacddd4d88b1daf6"
+          }
+        }
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Post 1"
+          },
+          "body": {
+            "type": "string",
+            "example": "body 1"
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "usersLiked": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "usersReading": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "views": {
+            "type": "number",
+            "example": 20
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "example": "www.photo.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "61ed31eedacddd4d88b1daf6"
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Javascript"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "61ed31eedacddd4d88b1daf6"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "John_Doe"
+          },
+          "likes": {
+            "type": "number",
+            "example": 30
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "readingList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "parentComment": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Comment"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-23T10:46:06.831Z"
+          },
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "61ed31eedacddd4d88b1daf6"
+          }
+        }
+      }
+    }
+  },
+  "paths": {}
 }

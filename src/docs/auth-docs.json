@@ -1,267 +1,174 @@
-{  "/auth/register": {
+{
+  "/auth/register": {
     "post": {
-
-"requestBody": {
-"content": {
-"application/json":{   
-   "schema": {
-  "type": "object",
-  "properties": {
-      "username": {
-          "type": "string",
-          "example": "John_Doe"
-        },
-        "password": {
-          "type": "string",
-          "example": "qwer123"
-        },
-        "email": {
-          "type": "string",
-          "format": "email",
-          "example": "john@mail.com"
-        },
-        "firstName": {
-          "type": "string",
-          "example": "John"
-        },
-        "lastName": {
-          "type": "string",
-          "example": "Doe"
-        },
-        "location": {
-          "type": "string",
-          "example": "Ukraine"     
-        },
-        "githubUrl": {
-          "type": "string",
-          "format": "uri",
-          "example": "https://github.com/MihailLadyk"     
-        },
-        "avatarUrl": {
-          "type": "string",
-          "format": "uri",
-          "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"     
-        },
-        "description": {
-          "type": "string",
-          "example": "Desription 1"     
-        },
-        "work": {
-          "type": "string",
-          "example": "Web developer"     
-        },
-        "hobby": {
-          "type": "string",
-          "example": "Coding"     
-        },
-        "birthDate": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2022-01-23T10:46:06.831Z"
-        },
-        
-        "following": {
-         "type": "string",
-         "example": "ref user"
-        },
-        "followers": {
-          "type": "string",
-          "example": "ref user"
-         },
-         "readingList": {
-          "type": "string",
-          "example": "ref post"
-         },
-         "likedPosts": {
-          "type": "string",
-          "example": "ref post"
-         },
-         "likedTags": {
-          "type": "string",
-          "example": "ref tags"
-         },
-         "likedComments": {
-          "type": "string",
-          "example": "ref comments"
-         },
-         "posts": {
-          "type": "string",
-          "example": "ref post"
-         },
-         "chats": {
-          "type": "string",
-          "example": "ref chat"
-         },
-
-        "authToken": {
-          "type": "boolean",
-          "example": true     
-        },
-        "verificated": {
-          "type": "boolean",
-          "example": true     
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2022-01-23T10:46:06.831Z"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2022-01-23T10:46:06.831Z"
-        },
-        "_id": {
-          "type": "string",
-          "format": "uuid",
-          "example": "61ed31eedacddd4d88b1daf6"
-        }
-  },
-  "required": ["username","email","password","firstName","lastName"]
-}}
-}
-},
-
-        "description": "Create new user",
-        "responses": {
-            "201": {
-                "description": "OK",
-                "content": {
-                    "application/json":{
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "username": {
-                                    "type": "string",
-                                    "example": "John_Doe"
-                                  },
-                                  "password": {
-                                    "type": "string",
-                                    "example": "qwer123"
-                                  },
-                                  "email": {
-                                    "type": "string",
-                                    "format": "email",
-                                    "example": "john@mail.com"
-                                  },
-                                  "firstName": {
-                                    "type": "string",
-                                    "example": "John"
-                                  },
-                                  "lastName": {
-                                    "type": "string",
-                                    "example": "Doe"
-                                  },
-                                  "location": {
-                                    "type": "string",
-                                    "example": "Ukraine"     
-                                  },
-                                  "githubUrl": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "example": "https://github.com/MihailLadyk"     
-                                  },
-                                  "avatarUrl": {
-                                    "type": "string",
-                                    "format": "uri",
-                                    "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"     
-                                  },
-                                  "description": {
-                                    "type": "string",
-                                    "example": "Desription 1"     
-                                  },
-                                  "work": {
-                                    "type": "string",
-                                    "example": "Web developer"     
-                                  },
-                                  "hobby": {
-                                    "type": "string",
-                                    "example": "Coding"     
-                                  },
-                                  "birthDate": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2022-01-23T10:46:06.831Z"
-                                  },
-                                  
-                                  "following": {
-                                   "type": "string",
-                                   "example": "ref user"
-                                  },
-                                  "followers": {
-                                    "type": "string",
-                                    "example": "ref user"
-                                   },
-                                   "readingList": {
-                                    "type": "string",
-                                    "example": "ref post"
-                                   },
-                                   "likedPosts": {
-                                    "type": "string",
-                                    "example": "ref post"
-                                   },
-                                   "likedTags": {
-                                    "type": "string",
-                                    "example": "ref tags"
-                                   },
-                                   "likedComments": {
-                                    "type": "string",
-                                    "example": "ref comments"
-                                   },
-                                   "posts": {
-                                    "type": "string",
-                                    "example": "ref post"
-                                   },
-                                   "chats": {
-                                    "type": "string",
-                                    "example": "ref chat"
-                                   },
-
-                                  "authToken": {
-                                    "type": "boolean",
-                                    "example": true     
-                                  },
-                                  "verificated": {
-                                    "type": "boolean",
-                                    "example": true     
-                                  },
-                                  "createdAt": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2022-01-23T10:46:06.831Z"
-                                  },
-                                  "updatedAt": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2022-01-23T10:46:06.831Z"
-                                  },
-                                  "_id": {
-                                    "type": "string",
-                                    "format": "uuid",
-                                    "example": "61ed31eedacddd4d88b1daf6"
-                                  }
-                            },
-                            "required": ["username","email","password","firstName","lastName"]
-                        }
-                    }
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "John_Doe"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "qwer123"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "john@mail.com"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "Ukraine"
+                },
+                "githubUrl": {
+                  "type": "string",
+                  "format": "uri",
+                  "example": "https://github.com/MihailLadyk"
+                },
+                "avatarUrl": {
+                  "type": "string",
+                  "format": "uri",
+                  "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Desription 1"
+                },
+                "work": {
+                  "type": "string",
+                  "example": "Web developer"
+                },
+                "hobby": {
+                  "type": "string",
+                  "example": "Coding"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2022-01-23T10:46:06.831Z"
                 }
-            },
-            "500": {
-              "description": "Common error code",
-        "content": {}
+              },
+              "required": [
+                "username",
+                "email",
+                "password",
+                "firstName",
+                "lastName"
+              ]
             }
+          }
         }
+      },
+
+      "description": "Create new user",
+      "responses": {
+        "201": {
+          "description": "OK",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Validation Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "object", "example": {} },
+                  "errors": {
+                    "type": "array",
+                    "items": { "type": "string", "example": "Required field" }
+                  },
+                  "inner": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "example": "passwrod"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "required"
+                        },
+                        "params": {
+                          "type": "object",
+                          "properties": {
+                            "params": {
+                              "type": "string",
+                              "example": "password"
+                            }
+                          }
+                        },
+                        "inner": {
+                          "type": "array",
+                          "example": []
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ValidationError"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Required field!"
+                        }
+                      }
+                    }
+                  },
+                  "name": { "type": "string", "example": "ValidationError" },
+                  "message": {
+                    "type": "string",
+                    "example": "1 error occurred"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Common error code",
+          "content": {}
+        }
+      }
     }
-},
-"/auth/login": {
-  "post": {
-    "requestBody": {
-      "content": {
-        "application/json":{   
-           "schema": {
-          "type": "object",
-          "properties": {
-              "username": {
+  },
+  "/auth/login": {
+    "post": {
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
                   "type": "string",
                   "example": "John_Doe"
                 },
@@ -269,343 +176,205 @@
                   "type": "string",
                   "example": "qwer123"
                 }
-                }}}}},
-    "description": "Log in",
-    "responses": {
-      "200": {
-        "description": "Success",
-        "content": {
-          "application/json": {
-            
-            "schema": {
-              "type": "object",
-              "properties": {
-                  "username": {
-                      "type": "string",
-                      "example": "John_Doe"
-                    },
-                    "password": {
-                      "type": "string",
-                      "example": "qwer123"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "example": "john@mail.com"
-                    },
-                    "firstName": {
-                      "type": "string",
-                      "example": "John"
-                    },
-                    "lastName": {
-                      "type": "string",
-                      "example": "Doe"
-                    },
-                    "location": {
-                      "type": "string",
-                      "example": "Ukraine"     
-                    },
-                    "githubUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://github.com/MihailLadyk"     
-                    },
-                    "avatarUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"     
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "Desription 1"     
-                    },
-                    "work": {
-                      "type": "string",
-                      "example": "Web developer"     
-                    },
-                    "hobby": {
-                      "type": "string",
-                      "example": "Coding"     
-                    },
-                    "birthDate": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    
-                    "following": {
-                     "type": "string",
-                     "example": "ref user"
-                    },
-                    "followers": {
-                      "type": "string",
-                      "example": "ref user"
-                     },
-                     "readingList": {
-                      "type": "string",
-                      "example": "ref post"
-                     },
-                     "likedPosts": {
-                      "type": "string",
-                      "example": "ref post"
-                     },
-                     "likedTags": {
-                      "type": "string",
-                      "example": "ref tags"
-                     },
-                     "likedComments": {
-                      "type": "string",
-                      "example": "ref comments"
-                     },
-                     "posts": {
-                      "type": "string",
-                      "example": "ref post"
-                     },
-                     "chats": {
-                      "type": "string",
-                      "example": "ref chat"
-                     },
-
-                    "authToken": {
-                      "type": "boolean",
-                      "example": true     
-                    },
-                    "verificated": {
-                      "type": "boolean",
-                      "example": true     
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "_id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "61ed31eedacddd4d88b1daf6"
-                    },
-                    "jwtToken": {
-                      "type": "string",
-                      "example": "urgjoierjf30jrf3roif3jmg938m"
-                    }
-      
-              },
-              "required": ["username","email","password","firstName","lastName"]
-          }
+              }
+            }
           }
         }
       },
-      "500": {
-        "description": "Commmon error",
-        "content": {}
-      }
-    }
-  }
-},
-"/auth/me":{
-  "description": "Get info about current user",
-  "get": {
-    "responses": {
-      "500":  {
-        "description": "Common error",
-        "content": {}
-      },
-      "200": {
-        "description": "Success",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                  "username": {
-                      "type": "string",
-                      "example": "John_Doe"
-                    },
-                    "password": {
-                      "type": "string",
-                      "example": "qwer123"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "example": "john@mail.com"
-                    },
-                    "firstName": {
-                      "type": "string",
-                      "example": "John"
-                    },
-                    "lastName": {
-                      "type": "string",
-                      "example": "Doe"
-                    },
-                    "location": {
-                      "type": "string",
-                      "example": "Ukraine"     
-                    },
-                    "githubUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://github.com/MihailLadyk"     
-                    },
-                    "avatarUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"     
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "Desription 1"     
-                    },
-                    "work": {
-                      "type": "string",
-                      "example": "Web developer"     
-                    },
-                    "hobby": {
-                      "type": "string",
-                      "example": "Coding"     
-                    },
-                    "birthDate": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    
-                    "following": {
-                     "type": "string",
-                     "example": "ref user"
-                    },
-                    "followers": {
-                      "type": "string",
-                      "example": "ref user"
-                     },
-                     "readingList": {
-                      "type": "string",
-                      "example": "ref post"
-                     },
-                     "likedPosts": {
-                      "type": "string",
-                      "example": "ref post"
-                     },
-                     "likedTags": {
-                      "type": "string",
-                      "example": "ref tags"
-                     },
-                     "likedComments": {
-                      "type": "string",
-                      "example": "ref comments"
-                     },
-                     "posts": {
-                      "type": "string",
-                      "example": "ref post"
-                     },
-                     "chats": {
-                      "type": "string",
-                      "example": "ref chat"
-                     },
-
-                    "authToken": {
-                      "type": "boolean",
-                      "example": true     
-                    },
-                    "verificated": {
-                      "type": "boolean",
-                      "example": true     
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "_id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "61ed31eedacddd4d88b1daf6"
-                    }
-              },
-              "required": ["username","email","password","firstName","lastName"]
+      "description": "Log in",
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
           }
-          }
-        }
-      }
-    }
-  }
-},
-"/auth/token/verificate/{authToken}": {
-  "get": {
-    "parameters": [
-      {
-        "name": "email",
-        "in": "path",
-        "example": "12485J@mail.com",
-        "schema": {
-          "type": "string",
-          "format": "email"
         },
-        "required": true
-      }
-    ],
-    "description": "verificate token",
-    "responses": {
-      "500":{
-        "description": "Common error",
-        "content": {
-          "application/json":{
-          "example": "something is wrong!"
+        "422": {
+          "description": "Validation Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "object", "example": {} },
+                  "errors": {
+                    "type": "array",
+                    "items": { "type": "string", "example": "Required field" }
+                  },
+                  "inner": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "example": "passwrod"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "required"
+                        },
+                        "params": {
+                          "type": "object",
+                          "properties": {
+                            "params": {
+                              "type": "string",
+                              "example": "password"
+                            }
+                          }
+                        },
+                        "inner": {
+                          "type": "array",
+                          "example": []
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ValidationError"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Required field!"
+                        }
+                      }
+                    }
+                  },
+                  "name": { "type": "string", "example": "ValidationError" },
+                  "message": {
+                    "type": "string",
+                    "example": "1 error occurred"
+                  }
+                }
+              }
+            }
           }
-        }
-      },
-      "200":{
-        "description": "Success",
-        "content": {
-          "application/json":{
-          "example": "email verificated ok!"
-          }
-        }
-      }
-    }
-  }
-},
-"/auth/token/resend/{id}": {
-  "post": {
-    "parameters": [
-      {
-        "name": "id",
-        "in": "path",
-        "example": "61ed31eedacddd4d88b1daf6",
-        "schema": {
-          "type": "string"
         },
-        "required": true
+        "500": {
+          "description": "Commmon error",
+          "content": {}
+        }
       }
-    ],
-    "description": "resend token",
-    "responses": {
-      "500":{
-        "description": "Common error",
-        "content": {
-          "application/json":{
-          "example": "something is wrong!"
+    }
+  },
+  "/auth/me": {
+    "get": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "description": "Get info about current user",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "message": {
+                "type": "string",
+                "example": "Unauthtorized"
+              }
+            }
+          }
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
           }
         }
-      },
-      "200":{
-        "description": "Success",
-        "content": {
-          "application/json":{
-          "example": "token resend OK!"
+      }
+    }
+  },
+  "/auth/token/verificate/{authToken}": {
+    "get": {
+      "parameters": [
+        {
+          "name": "authToken",
+          "in": "path",
+          "example": "938jf9j39f88934fupo3kf9u67oijskpiu308f34jfp34f93408j4f834fy34f9834f",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Verificate token",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {
+            "application/json": {
+              "example": "Something is wrong!"
+            }
+          }
+        },
+
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "example": "Email verificated OK!"
+            }
+          }
+        }
+      }
+    }
+  },
+  "/auth/token/resend/{id}": {
+    "post": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Resend token",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {
+            "application/json": {
+              "example": "Something is wrong!"
+            }
+          }
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "example": "Token resend OK!"
+            }
           }
         }
       }
     }
   }
-}}
+}

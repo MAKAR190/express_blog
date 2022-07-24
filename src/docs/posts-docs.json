@@ -1,4 +1,5 @@
-{  "/posts": {
+{
+  "/posts": {
     "get": {
       "description": "Get posts",
       "responses": {
@@ -13,36 +14,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "Post 1"
-                  },
-                  "body": {
-                    "type": "string",
-                    "example": "body 1"
-                  },
-                  "views": {
-                    "type": "number",
-                    "example": 20
-                  },
-                  "thumbnailUrl": {
-                    "type": "string",
-                    "example": "www.photo.com"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "_id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "example": "61ed31eedacddd4d88b1daf6"
+                  "post": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Post"
                   }
                 }
               }
@@ -55,11 +29,32 @@
 
   "/posts/recomended": {
     "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "description": "Get recomended posts",
       "responses": {
         "500": {
           "description": "Common error",
           "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
         },
         "200": {
           "description": "Success",
@@ -68,36 +63,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "Post 1"
-                  },
-                  "body": {
-                    "type": "string",
-                    "example": "body 1"
-                  },
-                  "views": {
-                    "type": "number",
-                    "example": 20
-                  },
-                  "thumbnailUrl": {
-                    "type": "string",
-                    "example": "www.photo.com"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "_id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "example": "61ed31eedacddd4d88b1daf6"
+                  "post": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Post"
                   }
                 }
               }
@@ -109,6 +77,11 @@
   },
   "/posts/": {
     "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "requestBody": {
         "content": {
           "application/json": {
@@ -123,28 +96,16 @@
                   "type": "string",
                   "example": "body 1"
                 },
-                "views": {
-                  "type": "number",
-                  "example": 20
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
                 },
+
                 "thumbnailUrl": {
                   "type": "string",
                   "example": "www.photo.com"
-                },
-                "createdAt": {
-                  "type": "string",
-                  "format": "date-time",
-                  "example": "2022-01-23T10:46:06.831Z"
-                },
-                "updatedAt": {
-                  "type": "string",
-                  "format": "date-time",
-                  "example": "2022-01-23T10:46:06.831Z"
-                },
-                "_id": {
-                  "type": "string",
-                  "format": "uuid",
-                  "example": "61ed31eedacddd4d88b1daf6"
                 }
               },
               "required": ["title", "body"]
@@ -152,11 +113,27 @@
           }
         }
       },
-      "description": "Post",
+      "description": "Post a post",
       "responses": {
         "500": {
           "description": "Common error",
           "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
         },
         "200": {
           "description": "Success",
@@ -165,39 +142,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "Post 1"
-                  },
-                  "body": {
-                    "type": "string",
-                    "example": "body 1"
-                  },
-                  "views": {
-                    "type": "number",
-                    "example": 20
-                  },
-                  "thumbnailUrl": {
-                    "type": "string",
-                    "example": "www.photo.com"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "_id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "example": "61ed31eedacddd4d88b1daf6"
+                  "post": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Post"
                   }
-                },
-                "required": ["title", "body"]
+                }
               }
             }
           }
@@ -210,7 +159,7 @@
     "get": {
       "parameters": [
         {
-          "name": "commentId",
+          "name": "_id",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -219,7 +168,7 @@
           "required": true
         }
       ],
-      "description": "",
+      "description": "Get post with id",
       "responses": {
         "500": {
           "description": "Common error",
@@ -232,39 +181,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "Post 1"
-                  },
-                  "body": {
-                    "type": "string",
-                    "example": "body 1"
-                  },
-                  "views": {
-                    "type": "number",
-                    "example": 20
-                  },
-                  "thumbnailUrl": {
-                    "type": "string",
-                    "example": "www.photo.com"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "_id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "example": "61ed31eedacddd4d88b1daf6"
+                  "post": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Post"
                   }
-                },
-                "required": ["title", "body"]
+                }
               }
             }
           }
@@ -272,6 +193,11 @@
       }
     },
     "put": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "requestBody": {
         "content": {
           "application/json": {
@@ -316,7 +242,7 @@
       },
       "parameters": [
         {
-          "name": "commentId",
+          "name": "_id",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -325,11 +251,27 @@
           "required": true
         }
       ],
-      "description": "",
+      "description": "Change post",
       "responses": {
         "500": {
           "description": "Common error",
           "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
         },
         "200": {
           "description": "Success",
@@ -378,9 +320,14 @@
       }
     },
     "delete": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "parameters": [
         {
-          "name": "commentId",
+          "name": "_id",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -390,7 +337,7 @@
           "required": true
         }
       ],
-      "description": "",
+      "description": "Delete post",
       "responses": {
         "500": {
           "description": "Common error",
@@ -409,11 +356,16 @@
       }
     }
   },
-  "/posts/{id}/like": {
+  "/posts/{_id}/like": {
     "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "parameters": [
         {
-          "name": "commentId",
+          "name": "_id",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -429,6 +381,22 @@
           "description": "Common error",
           "content": {}
         },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
+        },
         "200": {
           "description": "Success",
           "content": {
@@ -436,39 +404,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "Post 1"
-                  },
-                  "body": {
-                    "type": "string",
-                    "example": "body 1"
-                  },
-                  "views": {
-                    "type": "number",
-                    "example": 20
-                  },
-                  "thumbnailUrl": {
-                    "type": "string",
-                    "example": "www.photo.com"
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "updatedAt": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2022-01-23T10:46:06.831Z"
-                  },
-                  "_id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "example": "61ed31eedacddd4d88b1daf6"
+                  "post": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Post"
                   }
-                },
-                "required": ["title", "body"]
+                }
               }
             }
           }
@@ -478,9 +418,14 @@
   },
   "/posts/{id}/save": {
     "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
       "parameters": [
         {
-          "name": "commentId",
+          "name": "id",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -494,6 +439,22 @@
         "500": {
           "description": "Common error",
           "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
         },
         "200": {
           "description": "Success",
@@ -514,7 +475,7 @@
     "post": {
       "parameters": [
         {
-          "name": "commentId",
+          "name": "postId",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -534,121 +495,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "username": {
-                      "type": "string",
-                      "example": "John_Doe"
-                    },
-                    "password": {
-                      "type": "string",
-                      "example": "qwer123"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "example": "john@mail.com"
-                    },
-                    "firstName": {
-                      "type": "string",
-                      "example": "John"
-                    },
-                    "lastName": {
-                      "type": "string",
-                      "example": "Doe"
-                    },
-                    "location": {
-                      "type": "string",
-                      "example": "Ukraine"
-                    },
-                    "githubUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://github.com/MihailLadyk"
-                    },
-                    "avatarUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "Desription 1"
-                    },
-                    "work": {
-                      "type": "string",
-                      "example": "Web developer"
-                    },
-                    "hobby": {
-                      "type": "string",
-                      "example": "Coding"
-                    },
-                    "birthDate": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-
-                    "following": {
-                      "type": "string",
-                      "example": "ref user"
-                    },
-                    "followers": {
-                      "type": "string",
-                      "example": "ref user"
-                    },
-                    "readingList": {
-                      "type": "string",
-                      "example": "ref post"
-                    },
-                    "likedPosts": {
-                      "type": "string",
-                      "example": "ref post"
-                    },
-                    "likedTags": {
-                      "type": "string",
-                      "example": "ref tags"
-                    },
-                    "likedComments": {
-                      "type": "string",
-                      "example": "ref comments"
-                    },
-                    "posts": {
-                      "type": "string",
-                      "example": "ref post"
-                    },
-                    "chats": {
-                      "type": "string",
-                      "example": "ref chat"
-                    },
-
-                    "authToken": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "verificated": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "_id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "61ed31eedacddd4d88b1daf6"
-                    }
-                  },
-                  "required": ["title", "body"]
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
               }
             }
@@ -661,7 +513,7 @@
     "post": {
       "parameters": [
         {
-          "name": "commentId",
+          "name": "postId",
           "in": "path",
           "example": "61ed31eedacddd4d88b1daf6",
           "schema": {
@@ -670,7 +522,7 @@
           "required": true
         }
       ],
-      "description": "Get post likes",
+      "description": "Get post comments",
       "responses": {
         "500": {
           "description": "Common error",
@@ -681,47 +533,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "text": {
-                      "type": "string",
-                      "example": "John_Doe"
-                    },
-                    "likes": {
-                      "type": "number",
-                      "example": 30
-                    },
-                    "author": {
-                      "type": "string",
-                      "example": "ref user"
-                    },
-                    "parentPost": {
-                      "type": "string",
-                      "example": "ref post"
-                    },
-                    "parentComment": {
-                      "type": "string",
-                      "example": "ref comment"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "_id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "61ed31eedacddd4d88b1daf6"
-                    }
-                  },
-                  "required": ["title", "body"]
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Comment"
+                  }
                 }
               }
             }
@@ -729,4 +546,5 @@
         }
       }
     }
-  }}
+  }
+}

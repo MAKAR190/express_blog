@@ -1,38 +1,22 @@
 {
-    "/tags": {
-      "get": {
-        "description": "Get tags",
-        "responses": {
-          "500": {
-            "description": "Common error",
-            "content": {}
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "example": "Javascript"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2022-01-23T10:46:06.831Z"
-                    },
-                    "_id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "61ed31eedacddd4d88b1daf6"
-                    }
+  "/tags": {
+    "get": {
+      "description": "Get tags",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tags": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Tag"
                   }
                 }
               }
@@ -40,4 +24,6 @@
           }
         }
       }
-    }}
+    }
+  }
+}

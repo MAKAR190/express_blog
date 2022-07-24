@@ -1,314 +1,314 @@
 {
-    "/comments/": {
-        "post": {
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "text": {
-                      "type": "string",
-                      "example": "Text 1"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "description": "Create comment",
-          "responses": {
-            "500": {
-              "description": "Common error",
-              "content": {}
-            },
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "text": {
-                        "type": "string",
-                        "example": "John_Doe"
-                      },
-                      "likes": {
-                        "type": "number",
-                        "example": 30
-                      },
-                      "author": {
-                        "type": "string",
-                        "example": "ref user"
-                      },
-                      "parentPost": {
-                        "type": "string",
-                        "example": "ref post"
-                      },
-                      "parentComment": {
-                        "type": "string",
-                        "example": "ref comment"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2022-01-23T10:46:06.831Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2022-01-23T10:46:06.831Z"
-                      },
-                      "_id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "example": "61ed31eedacddd4d88b1daf6"
-                      }
-                    }
-                  }
+  "/comments/": {
+    "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "Text 1"
                 }
               }
             }
           }
         }
       },
-      "/comments/{commentId}/like": {
-        "post": {
-          "parameters": [
-            {
-              "name": "commentId",
-              "in": "path",
-              "example": "61ed31eedacddd4d88b1daf6",
+      "description": "Create comment",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
               "schema": {
-                "type": "string"
-              },
-              "required": true
-            }
-          ],
-          "description": "Create comment",
-          "responses": {
-            "500": {
-              "description": "Common error",
-              "content": {}
-            },
-            "200": {
-              "description": "Success",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "text": {
-                        "type": "string",
-                        "example": "John_Doe"
-                      },
-                      "likes": {
-                        "type": "number",
-                        "example": 30
-                      },
-                      "author": {
-                        "type": "string",
-                        "example": "ref user"
-                      },
-                      "parentPost": {
-                        "type": "string",
-                        "example": "ref post"
-                      },
-                      "parentComment": {
-                        "type": "string",
-                        "example": "ref comment"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2022-01-23T10:46:06.831Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2022-01-23T10:46:06.831Z"
-                      },
-                      "_id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "example": "61ed31eedacddd4d88b1daf6"
-                      }
-                    }
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
                   }
                 }
               }
             }
           }
-        }
-      },
-      "/comment/{commentId}": {
-        "delete": {
-          "parameters": [
-            {
-              "name": "commentId",
-              "in": "path",
-              "example": "61ed31eedacddd4d88b1daf6",
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
               "schema": {
-                "type": "string"
-              },
-              "required": true
-            }
-          ],
-          "description": "Create comment",
-          "responses": {
-            "500": {
-              "description": "Common error",
-              "content": {}
-            },
-            "200": {
-              "description": "Success",
-              "content": {}
-            }
-          }
-        }
-      },
-      "/comments/{commentId}": {
-        "put": {
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "text": {
-                      "type": "string",
-                      "example": "Text 1"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "parameters": [
-            {
-              "name": "commentId",
-              "in": "path",
-              "example": "61ed31eedacddd4d88b1daf6",
-              "schema": {
-                "type": "string"
-              },
-              "required": true
-            }
-          ],
-          "description": "Create comment",
-          "responses": {
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
                     "type": "object",
-                    "properties": {
-                      "value": { "type": "object", "example": {} },
-                      "errors": {
-                        "type": "array",
-                        "items": { "type": "string", "example": "Required field" }
-                      },
-                      "inner": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "path": {
-                              "type": "string",
-                              "example": "author"
-                            },
-                            "type": {
-                              "type": "string",
-                              "example": "required"
-                            },
-                            "params": {
-                              "type": "object",
-                              "properties": {
-                                "params": {
-                                  "type": "string",
-                                  "example": "author"
-                                }
-                              }
-                            },
-                            "inner": {
-                              "type": "array",
-                              "example": []
-                            },
-                            "name": {
-                              "type": "string",
-                              "example": "ValidationError"
-                            },
-                            "message": {
-                              "type": "string",
-                              "example": "Required field!"
-                            }
-                          }
-                        }
-                      },
-                      "name": { "type": "string", "example": "ValidationError" },
-                      "message": {
-                        "type": "string",
-                        "example": "1 error occurred"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Comment"
                   }
                 }
               }
-            },
-            "500": {
-              "description": "Common error",
-              "content": {}
-            },
-            "200": {
-              "description": "Success",
-              "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "text": {
-                          "type": "string",
-                          "example": "John_Doe"
-                        },
-                        "likes": {
-                          "type": "number",
-                          "example": 30
-                        },
-                        "author": {
-                          "type": "string",
-                          "example": "ref user"
-                        },
-                        "parentPost": {
-                          "type": "string",
-                          "example": "ref post"
-                        },
-                        "parentComment": {
-                          "type": "string",
-                          "example": "ref comment"
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2022-01-23T10:46:06.831Z"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2022-01-23T10:46:06.831Z"
-                        },
-                        "_id": {
-                          "type": "string",
-                          "format": "uuid",
-                          "example": "61ed31eedacddd4d88b1daf6"
-                        }
-                      }
-                    }
-                  }
-                }
             }
           }
         }
       }
-  
+    }
+  },
+  "/comments/{commentId}/like": {
+    "post": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Like comment",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Comment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/comments/{commentId}": {
+    "delete": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Delete comment",
+      "responses": {
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Done"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "Text 1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "commentId",
+          "in": "path",
+          "example": "61ed31eedacddd4d88b1daf6",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "description": "Change comment",
+      "responses": {
+        "422": {
+          "description": "Validation Error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "object", "example": {} },
+                  "errors": {
+                    "type": "array",
+                    "items": { "type": "string", "example": "Required field" }
+                  },
+                  "inner": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "example": "author"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "required"
+                        },
+                        "params": {
+                          "type": "object",
+                          "properties": {
+                            "params": {
+                              "type": "string",
+                              "example": "author"
+                            }
+                          }
+                        },
+                        "inner": {
+                          "type": "array",
+                          "example": []
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "ValidationError"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Required field!"
+                        }
+                      }
+                    }
+                  },
+                  "name": { "type": "string", "example": "ValidationError" },
+                  "message": {
+                    "type": "string",
+                    "example": "1 error occurred"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Common error",
+          "content": {}
+        },
+        "401": {
+          "description": "Authorization failed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Unauthtorized"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/Comment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

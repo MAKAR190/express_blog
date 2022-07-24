@@ -1,8 +1,29 @@
 const express = require("express");
-const router = express.Router();
 const userController = require("../controllers/userController");
+
 const { auth, schemaValidate, verifyEmail } = require("../middlewares");
 const { userValidate } = require("../validationSchemas");
+const { User, Post, Tag, Notification } = require("../models");
+
+const router = express.Router();
+
+router.get("/notifications", auth, async (req, res) => {
+  console.log(req.user._id);
+  const user = await User.findByzId(req.user._id).populate({
+    path: "notifications",
+    populate: [
+      {
+        path: "entity",
+      },
+      {
+        path: "user",
+      },
+    ],
+  });
+
+  return res.json(user.notifications);
+});
+
 router.get("/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)
@@ -43,10 +64,23 @@ router.post("/:userId/follow", auth, verifyEmail, async (req, res) => {
   try {
     const following = req.user.following.includes(req.params.userId);
     const followUser = await User.findById(req.params.userId);
+
     if (following) {
       req.user.following.pull(req.params.userId);
       followUser.followers.pull(req.user._id);
     } else {
+      const new_notify = await Notification.create({
+        user: req.user._id,
+        entity: followUser._id,
+        type: "User",
+        action: "FOLLOW",
+      });
+
+      await User.findByIdAndUpdate(followUser._id, {
+        $push: {
+          notifications: new_notify._id,
+        },
+      });
       req.user.following.addToSet(req.params.userId);
       followUser.followers.addToSet(req.user._id);
     }

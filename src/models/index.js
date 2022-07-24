@@ -3,4 +3,5 @@ module.exports = {
   Post: require("./Post"),
   Tag: require("./Tag"),
   User: require("./User"),
+  Notification: require('./Notification')
 };

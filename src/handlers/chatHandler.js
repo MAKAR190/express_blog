@@ -15,10 +15,19 @@ module.exports = (io, socket) => {
       sender: senderId,
     });
     await newMessage.populate("sender");
-    const chat = await Chat.findById(chatId);
+    const chat = await Chat.findById(chatId)
+      .populate("users")
+      .populate({
+        path: "messages",
+        populate: {
+          path: "sender",
+        },
+      });
     chat.messages.addToSet(newMessage.id);
     await chat.save();
     io.to(chatId).emit("message:create", newMessage);
+    io.emit("chat:updated", chat);
+
     console.log(body, chatId, senderId);
   };
   const createChat = async (receiverId, senderId, cb) => {

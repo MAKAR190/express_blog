@@ -15,7 +15,7 @@ require("dotenv").config();
 
 const emailConfig = {
   host: process.env.NODE_MAILER_HOST,
-  port: porcess.env.NODE_MAILER_PORT,
+  port: process.env.NODE_MAILER_PORT,
   secure: true,
   auth: {
     user: process.env.NODE_MAILER_EMAIL,

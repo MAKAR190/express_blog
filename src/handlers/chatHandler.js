@@ -15,16 +15,16 @@ module.exports = (io, socket) => {
       sender: senderId,
     });
     await newMessage.populate("sender");
-    const chat = await Chat.findById(chatId)
-      .populate("users")
-      .populate({
-        path: "messages",
-        populate: {
-          path: "sender",
-        },
-      });
+    const chat = await Chat.findById(chatId);
+
     chat.messages.addToSet(newMessage.id);
     await chat.save();
+    await chat.populate("users").populate({
+      path: "messages",
+      populate: {
+        path: "sender",
+      },
+    });
     io.to(chatId).emit("message:create", newMessage);
     io.emit("chat:updated", chat);
 

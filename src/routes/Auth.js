@@ -13,6 +13,17 @@ const chance = require("chance").Chance();
 const fs = require("fs");
 require("dotenv").config();
 
+const emailConfig = {
+  host: process.env.NODE_MAILER_HOST,
+  port: porcess.env.NODE_MAILER_PORT,
+  secure: true,
+  auth: {
+    user: process.env.NODE_MAILER_EMAIL,
+    pass: process.env.NODE_MAILER_PASS,
+  },
+};
+const emailTransporter = nodemailer.createTransport(emailConfig);
+
 router.post(
   "/register",
   upload.single("avatar"),
@@ -34,28 +45,14 @@ router.post(
         avatarUrl: avatar.url,
       });
 
-      const config = {
-        host: "smtp.meta.ua",
-        port: 465,
-        secure: true,
-        auth: {
-          user: "d.oliynyk2007@meta.ua",
-          pass: process.env.NODE_MAILER_PASS,
-        },
+      const emailOptions = {
+        from: process.env.NODE_MAILER_EMAIL,
+        to: newUser.email,
+        subject: "Express Blog Auth Token",
+        html: `<h2>Hello</h2> <p>Invitation link: ${newUser.authToken}</p> <p>Hello! This is auth token for your new account in 'express-blog'</p> <p>Have a Good Day!</p>`,
       };
 
-      const transporter = nodemailer.createTransport(config);
-      const emailOptions = {
-        from: "d.oliynyk2007@meta.ua",
-        to: newUser.email,
-        subject: 'Express Blog Auth Token',
-        html: `<h2>Hello</h2> <p>Invitation link: ${newUser.authToken}</p> <p>Hello! This is auth token for your new account in 'express-blog'</p> <p>Have a Good Day!</p>`,
-      }
-      
-      transporter
-      .sendMail(emailOptions)
-      .catch((err) => console.log(err))
-      
+      emailTransporter.sendMail(emailOptions).catch((err) => console.log(err));
 
       const payload = {
         _id: newUser._id,
@@ -135,25 +132,15 @@ router.post("/token/resend/:id", async (req, res) => {
     const newToken = `m-${chance.integer({ min: 00000, max: 99999 })}`;
     user.authToken = newToken;
     await user.save();
-    const config = {
-      host: "smtp.meta.ua",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "d.oliynyk2007@meta.ua",
-        pass: process.env.NODE_MAILER_PASS,
-      },
-    };
 
-    const transporter = nodemailer.createTransport(config);
     const emailOptions = {
-      from: "d.oliynyk2007@meta.ua",
+      from: process.env.NODE_MAILER_EMAIL,
       to: user.email,
-      subject: "Lorem ipsum dolor sit amet",
+      subject: "Express Blog Auth Token",
       html: `<h2>Hello</h2> <p>Invitation link: ${user.authToken} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem nisi, feugiat quis libero et, interdum bibendum elit. Pellentesque id ultrices urna. Nulla imperdiet dapibus mattis`,
     };
 
-    transporter.sendMail(emailOptions).catch((err) => console.log(err));
+    emailTransporter.sendMail(emailOptions).catch((err) => console.log(err));
 
     res.json({
       message: "token resend OK!",

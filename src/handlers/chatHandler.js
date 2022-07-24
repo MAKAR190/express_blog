@@ -76,6 +76,7 @@ module.exports = (io, socket) => {
     const updatedMessages = await Message.find({ chatId: chatId }).populate(
       "sender"
     );
+    io.to(chatId).emit("messages:read", updatedMessages);
     cb(updatedMessages);
   };
   const updateMessage = async (chatId, messageId) => {

@@ -160,9 +160,9 @@ router.get("/:userId/following", auth, async (req, res) => {
   }
 });
 
-router.get("/", userController.searchUsers);
-router.get("/:userId", userController.getUser);
+router.get("/", userController.searchUsers); // est
+router.get("/:userId", userController.getUser); // est
 router.post("/:userId/follow", userController.postUser);
-router.put("/:userId", userController.updateUser);
-router.delete("/:userId", userController.deleteUser);
+router.put("/:userId", userController.updateUser); // est
+router.delete("/:userId", userController.deleteUser); // est
 module.exports = router;

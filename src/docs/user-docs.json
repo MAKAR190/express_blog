@@ -63,9 +63,221 @@
           }
         }
       }
+    }, 
+    "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "example": "61ed31eedacddd4d88b1daf6",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ], 
+        
+        "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "John_Doe"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "qwer123"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "john@mail.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "Ukraine"
+                    },
+                    "githubUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://github.com/MihailLadyk"
+                    },
+                    "avatarUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Desription 1"
+                    },
+                    "work": {
+                      "type": "string",
+                      "example": "Web developer"
+                    },
+                    "hobby": {
+                      "type": "string",
+                      "example": "Coding"
+                    },
+                    "birthDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    }
+                  }
+                }
+              }
+            }
+        },
+  
+        "description": "Change User",
+        "responses": {
+          "500": {
+            "description": "Common error",
+            "content": {}
+          },
+          "403": {
+            "description": "Invalid User Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid User Id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthtorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    },
+    "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "example": "61ed31eedacddd4d88b1daf6",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+  
+        "description": "Delete User",
+        "responses": {
+          "500": {
+            "description": "Common error",
+            "content": {}
+          },
+          "403": {
+            "description": "Invalid User Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid User Id"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthtorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "example": "User successfully deleted!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
     }
   },
-  "/{userId}/follow": {
+  "/users/{userId}/follow": {
     "post": {
       "security": [
         {
@@ -124,5 +336,304 @@
         }
       }
     }
+  },
+  "/users/{userId}/followers": {
+    "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "example": "61ed31eedacddd4d88b1daf6",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+  
+        "description": "Get User Followers",
+        "responses": {
+          "500": {
+            "description": "Common error",
+            "content": {}
+          },
+          "401": {
+            "description": "Authorization failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthtorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User/properties/followers"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  },
+  "/users/{userId}/following": {
+    "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "example": "61ed31eedacddd4d88b1daf6",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+  
+        "description": "Get User Following",
+        "responses": {
+          "500": {
+            "description": "Common error",
+            "content": {}
+          },
+          "401": {
+            "description": "Authorization failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthtorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User/properties/following"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+  },
+  "/users": {
+    "get": {
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "example": "61ed31eedacddd4d88b1daf6",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+  
+        "description": "Get Users",
+        "responses": {
+          "500": {
+            "description": "Common error",
+            "content": {}
+          },
+          "401": {
+            "description": "Authorization failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthtorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+        }
+      }
+  },
+  "/users/:userId/follow": {
+    "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "example": "61ed31eedacddd4d88b1daf6",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ], 
+        "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "John_Doe"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "qwer123"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "john@mail.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "Ukraine"
+                    },
+                    "githubUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://github.com/MihailLadyk"
+                    },
+                    "avatarUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "https://i0.wp.com/spzomega.com.ua/wp-content/uploads/2016/08/default-placeholder.png?resize=300%2C300"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Desription 1"
+                    },
+                    "work": {
+                      "type": "string",
+                      "example": "Web developer"
+                    },
+                    "hobby": {
+                      "type": "string",
+                      "example": "Coding"
+                    },
+                    "birthDate": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2022-01-23T10:46:06.831Z"
+                    }
+                  }
+                }
+              }
+            }
+        },
+  
+        "description": "Follow User",
+        "responses": {
+          "500": {
+            "description": "Common error",
+            "content": {}
+          },
+          "401": {
+            "description": "Authorization failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthtorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "post": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
   }
 }

@@ -72,6 +72,7 @@ swaggerDocument.paths = {
   ...galleryDocs,
   ...tagsDocs,
   ...postsDocs,
+  ...userDocs,
 };
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json());

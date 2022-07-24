@@ -19,7 +19,7 @@ module.exports = (io, socket) => {
 
     chat.messages.addToSet(newMessage.id);
     await chat.save();
-    await chat.populate({
+    await chat.populate("users").populate({
       path: "messages",
       populate: {
         path: "sender",

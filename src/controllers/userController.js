@@ -1,6 +1,4 @@
 const { User } = require("../models");
-const { auth, schemaValidate } = require("../middlewares");
-const { userValidate } = require("../validationSchemas");
 
 exports.getUser = async (req, res) => {
   try {
@@ -38,26 +36,7 @@ exports.getUser = async (req, res) => {
     res.status(500).send(error);
   }
 };
-exports.postUser = async (req, res) => {
-  try {
-    const following = req.user.following.includes(req.params.userId);
-    const followUser = await User.findById(req.params.userId);
-    if (following) {
-      req.user.following.pull(req.params.userId);
-      followUser.followers.pull(req.user._id);
-    } else {
-      req.user.following.addToSet(req.params.userId);
-      followUser.followers.addToSet(req.user._id);
-    }
-    await req.user.save();
-    await followUser.save();
-    res.json({
-      followUser: followUser,
-    });
-  } catch (error) {
-    res.status(500).send(error);
-  }
-};
+
 exports.updateUser = async (req, res) => {
   try {
     if (req.user._id !== req.params.userId) {

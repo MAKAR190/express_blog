@@ -24,42 +24,6 @@ router.get("/notifications", auth, async (req, res) => {
   return res.json(user.notifications);
 });
 
-router.get("/:userId", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId)
-      .populate({
-        path: "readingList",
-        populate: [
-          {
-            path: "author",
-          },
-          {
-            path: "tags",
-          },
-        ],
-      })
-      .populate("likedPosts")
-      .populate("likesComments")
-      .populate({
-        path: "posts",
-        populate: [
-          {
-            path: "author",
-          },
-          {
-            path: "tags",
-          },
-        ],
-      });
-    if (!user) {
-      res.status(404).json({ message: "Not found" });
-      return;
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
 router.post("/:userId/follow", auth, verifyEmail, async (req, res) => {
   try {
     const following = req.user.following.includes(req.params.userId);
@@ -93,30 +57,7 @@ router.post("/:userId/follow", auth, verifyEmail, async (req, res) => {
     res.status(500).send(error);
   }
 });
-router.put(
-  "/:userId",
-  schemaValidate(userValidate.update),
-  auth,
-  verifyEmail,
-  async (req, res) => {
-    try {
-      if (req.user._id !== req.params.userId) {
-        res.status(403).json({ message: "Error 403" });
-        return;
-      }
-      const user = await User.findByIdAndUpdate(req.params.userId, req.body, {
-        new: true,
-      });
-      if (!user) {
-        res.status(404).json({ message: "Not found" });
-        return;
-      }
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  }
-);
+
 router.delete("/:userId", auth, verifyEmail, async (req, res) => {
   try {
     if (req.user._id !== req.params.userId) {
@@ -162,7 +103,12 @@ router.get("/:userId/following", auth, async (req, res) => {
 
 router.get("/", userController.searchUsers);
 router.get("/:userId", userController.getUser);
-router.post("/:userId/follow", userController.postUser);
-router.put("/:userId", userController.updateUser);
+router.put(
+  "/:userId",
+  userController.updateUser,
+  schemaValidate(userValidate.update),
+  auth,
+  verifyEmail
+);
 router.delete("/:userId", userController.deleteUser);
 module.exports = router;

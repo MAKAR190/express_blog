@@ -8,7 +8,7 @@ const Message = new Schema(
     },
     chat: {
       type: Schema.Types.ObjectId,
-      ref: "chat",
+      ref: "Chat",
     },
     read: {
       type: Boolean,

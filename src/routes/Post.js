@@ -1,25 +1,55 @@
 const express = require("express");
-const router = express.Router();
+
 const { schemaValidate, auth, verifyEmail } = require("../middlewares");
 const { postValidate } = require("../validationSchemas");
-const { Post, Tag, User } = require("../models");
+const { User, Post, Tag, Notification } = require("../models");
+
 const postUsersLikedController = require("../controllers/postLikesController");
 
 const postCommentsController = require("../controllers/postCommentsController");
+const { isErrored } = require("nodemailer/lib/xoauth2");
+
+const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    let { search = "", perPage = 10, page = 1, sortBy, sortOrder } = req.query;
+    let {
+      search = "",
+      perPage = 10,
+      page = 1,
+      sortBy = "usersLiked",
+      sortOrder = -1,
+      tagsInclude = "",
+      tagsExclude = "",
+    } = req.query;
     if (page === "") {
       page = 1;
     }
 
+    const tagsIncludeArr = tagsInclude.split(", ");
+
+    const tagsExcludeArr = tagsExclude.split(", ");
+
     const posts = await Post.find(
       {
-        title: {
-          $regex: search,
-          $options: "i",
-        },
+        $and: [
+          {
+            name: {
+              $in: tagsIncludeArr,
+            },
+          },
+          {
+            name: {
+              $nin: tagsExcludeArr,
+            },
+          },
+          {
+            name: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+        ],
       },
       null,
       {
@@ -120,10 +150,23 @@ router.post(
         body: req.body.body,
       });
 
+      const new_notify = await Notification.create({
+        user: req.user._id,
+        entity: newPost._id,
+        type: "Post",
+        action: "CREATE",
+      });
+
+      await User.findByIdAndUpdate(req.user._id, {
+        $push: {
+          notifications: new_notify._id,
+        },
+      });
+
       req.user.posts.push(newPost._id);
       await req.user.save();
 
-      res.json({ newTags, newPost });
+      res.status(201).json(newPost);
     } catch (error) {
       console.log(error);
       res.status(500).send(error);
@@ -222,21 +265,55 @@ router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
           $pull: { likedPosts: post._id },
         }
       );
-    } else {
-      post.usersLiked.addToSet(post._id);
-      req.user.likedPosts.addToSet(post._id);
 
-      req.user.likedTags.addToSet(...post.tags);
-      await req.user.save();
-      if (req.user.likedTags.length > 10) {
-        for (let i = 0; i <= req.user.likedTags.length - 10; i++) {
-          req.user = await User.findByIdAndUpdate(
-            req.user._id,
-            { $pop: { likedTags: -1 } },
-            { new: true }
-          );
+      const user_sender = req.user._id;
+
+      // console.log(obj_receiver);
+      // console.log(user_sender)
+      if (req.user.likedPosts.includes(req.params._id)) {
+        post.usersLiked.pull(post._id);
+
+        req.user.likedPosts.pull(post._id);
+      } else {
+        post.usersLiked.addToSet(post._id);
+        req.user.likedPosts.addToSet(post._id);
+
+        req.user.likedTags.addToSet(...post.tags);
+        await req.user.save();
+        if (req.user.likedTags.length > 10) {
+          for (let i = 0; i <= req.user.likedTags.length - 10; i++) {
+            req.user = await User.findByIdAndUpdate(
+              req.user._id,
+              { $pop: { likedTags: -1 } },
+              { new: true }
+            );
+          }
         }
+        const new_notify = await Notification.create({
+          user: user_sender,
+          entity: req.params._id,
+          type: "Post",
+          action: "LIKE",
+        });
+
+        await User.findByIdAndUpdate(post.author, {
+          $push: {
+            notifications: new_notify._id,
+          },
+        });
       }
+      const new_notify = await Notification.create({
+        user: user_sender,
+        entity: req.params._id,
+        type: "Post",
+        action: "LIKE",
+      });
+
+      await User.findByIdAndUpdate(post.author, {
+        $push: {
+          notifications: new_notify._id,
+        },
+      });
     }
     await post.save();
     res.json(post);

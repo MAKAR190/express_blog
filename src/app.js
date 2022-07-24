@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const { ExtractJwt, Strategy } = require("passport-jwt");
 const cloudinary = require("cloudinary").v2;
-const app = express();
 const { User } = require("./models");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./docs/main.json");
@@ -16,13 +15,7 @@ const galleryDocs = require("./docs/gallery-docs.json");
 const tagsDocs = require("./docs/tags-docs.json");
 const postsDocs = require("./docs/posts-docs.json");
 const userDocs = require("./docs/user-docs.json");
-const http = require("http").createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(http, {
-  cors: {
-    origin: "*",
-  },
-});
 const {
   UserRoute,
   Auth,
@@ -33,6 +26,13 @@ const {
 } = require("./routes");
 const chatHandler = require("./handlers/chatHandler");
 require("dotenv").config();
+const app = express();
+const http = require("http").createServer(app);
+const io = new Server(http, {
+  cors: {
+    origin: "*",
+  },
+});
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Database connected successfully"))
@@ -45,7 +45,7 @@ cloudinary.config({
 const onConnection = (socket) => {
   chatHandler(io, socket);
 };
-io.on("connection", onConnection);
+
 passport.use(
   new Strategy(
     {
@@ -87,9 +87,9 @@ app.use("/users", UserRoute);
 app.use("/posts", Postrouter);
 app.use("/comments", Comments);
 app.use("/tags", TagRouter);
-app.use("/gallery", GalleryRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });
+io.on("connection", onConnection);
 
 module.exports = http;

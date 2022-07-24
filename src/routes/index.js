@@ -1,8 +1,8 @@
 module.exports = {
-  Comments: require("./comments"),
+  Comments: require("./Comments"),
   Auth: require("./Auth"),
   UserRoute: require("./User"),
   Postrouter: require("./Post"),
-  TagRouter: require("./tags"),
-  GalleryRouter: require("./Gallery")
+  TagRouter: require("./Tags"),
+  GalleryRouter: require("./Gallery"),
 };

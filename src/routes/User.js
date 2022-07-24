@@ -109,6 +109,5 @@ router.put(
   schemaValidate(userValidate.update),
   auth,
   verifyEmail
-);
-router.delete("/:userId", userController.deleteUser);
+)
 module.exports = router;

@@ -39,7 +39,7 @@ exports.getUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    if (req.user._id !== req.params.userId) {
+    if (!req.user._id.equals(req.params.userId)) {
       res.status(403).json({ message: "Error 403" });
       return;
     }
@@ -52,6 +52,7 @@ exports.updateUser = async (req, res) => {
     }
     res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 };

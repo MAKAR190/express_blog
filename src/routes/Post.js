@@ -7,7 +7,6 @@ const { User, Post, Tag, Notification } = require("../models");
 const postUsersLikedController = require("../controllers/postLikesController");
 
 const postCommentsController = require("../controllers/postCommentsController");
-const { isErrored } = require("nodemailer/lib/xoauth2");
 
 const router = express.Router();
 
@@ -26,31 +25,28 @@ router.get("/", async (req, res) => {
       page = 1;
     }
 
-    const tagsIncludeArr = tagsInclude.split(", ");
+    const tagsIncludeArr = tagsInclude === '' ? [] : tagsInclude.split(", ");
 
-    const tagsExcludeArr = tagsExclude.split(", ");
+    const tagsExcludeArr = tagsExclude === '' ? [] : tagsExclude.split(", ");
+
+    console.log(tagsIncludeArr);
+
+    const filter = {
+      tags: {
+        $nin: tagsExcludeArr,
+      },
+      title: {
+        $regex: search,
+        $options: "i",
+      },
+    }
+
+    if (tagsIncludeArr.length > 0) {
+      filter.tags.$all = tagsIncludeArr;
+    }
 
     const posts = await Post.find(
-      {
-        $and: [
-          {
-            name: {
-              $in: tagsIncludeArr,
-            },
-          },
-          {
-            name: {
-              $nin: tagsExcludeArr,
-            },
-          },
-          {
-            name: {
-              $regex: search,
-              $options: "i",
-            },
-          },
-        ],
-      },
+      filter,
       null,
       {
         limit: Number(perPage),
@@ -62,12 +58,7 @@ router.get("/", async (req, res) => {
     )
       .populate("author")
       .populate("tags");
-    const count = await Post.countDocuments({
-      title: {
-        $regex: search,
-        $options: "i",
-      },
-    });
+    const count = await Post.countDocuments(filter);
 
     res.json({
       posts,
@@ -89,7 +80,13 @@ router.get("/recommended", auth, async (req, res) => {
       page = 1;
     }
 
-    const posts = await Post.find({ tags: { $in: req.user.likedTags } }, null, {
+    const filter = {
+      tags: { $in: req.user.likedTags },
+      usersLiked: { $ne: req.user._id }
+    };
+    const posts = await Post.find(filter,
+    null,
+    {
       limit: Number(perPage),
       skip: (Number(page) - 1) * Number(perPage),
       sort: {
@@ -98,9 +95,7 @@ router.get("/recommended", auth, async (req, res) => {
     })
       .populate("author")
       .populate("tags");
-    const count = await Post.countDocuments({
-      tags: { $in: req.user.likedTags },
-    });
+    const count = await Post.countDocuments(filter);
 
     res.json({
       posts,
@@ -176,7 +171,11 @@ router.post(
 
 router.get("/:_id", async (req, res) => {
   try {
-    const searchedPost = await Post.findById(req.params._id)
+    const searchedPost = await Post.findByIdAndUpdate(req.params._id, {
+      $inc: {
+        views: 1,
+      }
+    }, { new: true })
       .populate({
         path: "comments",
         populate: {
@@ -216,18 +215,23 @@ router.put(
           name: tagName,
         }))
       );
-      if (post.author._id !== req.user._id) {
+
+      if (!post.author._id.equals(req.user._id)) {
         res.status(403).json({ message: "Error 403" });
         return;
       }
+
       const editedPost = await Post.findByIdAndUpdate(
         req.params._id,
-        req.body,
+        {
+          ...req.body,
+          tags: tagsArr ? [...existingTags, ...newTags] : [],
+        },
         {
           new: true,
         }
       );
-      res.json({ editedPost, newTags });
+      res.json(editedPost);
     } catch (error) {
       console.log(error);
       res.status(500).send(error);
@@ -253,54 +257,27 @@ router.delete("/:_id", auth, verifyEmail, async (req, res) => {
 router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
   try {
     const post = await Post.findById(req.params._id);
+    const user_sender = req.user._id;
+
     if (req.user.likedPosts.includes(req.params._id)) {
-      post.usersLiked.pull(post._id);
+      post.usersLiked.pull(user_sender);
+      req.user.likedPosts.pull(post._id);
+      await post.save();
+      await req.user.save();
+    } else {
+      post.usersLiked.addToSet(user_sender);
+      req.user.likedPosts.addToSet(post._id);
 
-      req.user = await User.findByIdAndUpdate(
-        { _id: req.user._id },
-        {
-          $pullAll: {
-            likedTags: post.tags,
-          },
-          $pull: { likedPosts: post._id },
+      req.user.likedTags.addToSet(...post.tags);
+      await req.user.save();
+      if (req.user.likedTags.length > 10) {
+        for (let i = 0; i <= req.user.likedTags.length - 10; i++) {
+          req.user = await User.findByIdAndUpdate(
+            req.user._id,
+            { $pop: { likedTags: -1 } },
+            { new: true }
+          );
         }
-      );
-
-      const user_sender = req.user._id;
-
-      // console.log(obj_receiver);
-      // console.log(user_sender)
-      if (req.user.likedPosts.includes(req.params._id)) {
-        post.usersLiked.pull(post._id);
-
-        req.user.likedPosts.pull(post._id);
-      } else {
-        post.usersLiked.addToSet(post._id);
-        req.user.likedPosts.addToSet(post._id);
-
-        req.user.likedTags.addToSet(...post.tags);
-        await req.user.save();
-        if (req.user.likedTags.length > 10) {
-          for (let i = 0; i <= req.user.likedTags.length - 10; i++) {
-            req.user = await User.findByIdAndUpdate(
-              req.user._id,
-              { $pop: { likedTags: -1 } },
-              { new: true }
-            );
-          }
-        }
-        const new_notify = await Notification.create({
-          user: user_sender,
-          entity: req.params._id,
-          type: "Post",
-          action: "LIKE",
-        });
-
-        await User.findByIdAndUpdate(post.author, {
-          $push: {
-            notifications: new_notify._id,
-          },
-        });
       }
       const new_notify = await Notification.create({
         user: user_sender,
@@ -315,6 +292,7 @@ router.patch("/:_id/like", auth, verifyEmail, async (req, res) => {
         },
       });
     }
+
     await post.save();
     res.json(post);
   } catch (error) {

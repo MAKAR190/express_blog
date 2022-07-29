@@ -43,9 +43,10 @@ module.exports = (io, socket) => {
     }
     const newChat = await Chat.create({
       users: [receiverId, senderId],
-    })
-      .populate("users")
-      .populate("messages");
+    });
+
+    await newChat.populate("users");
+    await newChat.populate("messages");
 
     receiver.chats.addToSet(newChat);
     sender.chats.addToSet(newChat);

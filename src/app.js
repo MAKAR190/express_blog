@@ -87,6 +87,7 @@ app.use("/users", UserRoute);
 app.use("/posts", Postrouter);
 app.use("/comments", Comments);
 app.use("/tags", TagRouter);
+app.use("/gallery", GalleryRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });

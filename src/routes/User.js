@@ -105,9 +105,9 @@ router.get("/", userController.searchUsers);
 router.get("/:userId", userController.getUser);
 router.put(
   "/:userId",
-  userController.updateUser,
   schemaValidate(userValidate.update),
   auth,
-  verifyEmail
+  verifyEmail,
+  userController.updateUser,
 )
 module.exports = router;

@@ -1,9 +1,10 @@
-const { Comment } = require("../models");
+const { Comment, Post } = require("../models");
 
 async function createComment(req, res) {
   try {
     const newComment = await Comment.create({
       ...req.body,
+      author: req.user.id,
     });
     const parentPost = await Post.findById(req.body.parentPost);
     parentPost.comments.push(newComment._id);
@@ -18,7 +19,7 @@ async function createComment(req, res) {
 async function editComment(req, res) {
   try {
     const comment = await Comment.findById(req.params.commentId);
-    if (comment.author !== req.user._id) {
+    if (!comment.author.equals(req.user._id)) {
       res.status(403).json({ message: "Error 403" });
       return;
     }
@@ -59,7 +60,7 @@ async function likeComment(req, res) {
 async function deleteComment(req, res) {
   try {
     const comment = await Comment.findById(req.params.commentId);
-    if (comment.author !== req.user._id) {
+    if (!comment.author.equals(req.user._id)) {
       res.status(403).json({ message: "Error 403" });
       return;
     }

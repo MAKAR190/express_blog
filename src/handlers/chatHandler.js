@@ -77,14 +77,14 @@ module.exports = (io, socket) => {
   const getMessages = async (chatId, userId, cb) => {
     const messages = await Message.updateMany(
       {
-        chatId: chatId,
+        chat: chatId,
         sender: { $ne: userId },
         read: false,
       },
       { read: true },
       { new: true, rawResult: false }
     );
-    const updatedMessages = await Message.find({ chatId: chatId }).populate(
+    const updatedMessages = await Message.find({ chat: chatId }).populate(
       "sender"
     );
     io.to(chatId).emit("messages:read", updatedMessages);

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get("/notifications", auth, async (req, res) => {
   console.log(req.user._id);
-  const user = await User.findByzId(req.user._id).populate({
+  const user = await User.findById(req.user._id).populate({
     path: "notifications",
     populate: [
       {

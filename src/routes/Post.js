@@ -25,9 +25,9 @@ router.get("/", async (req, res) => {
       page = 1;
     }
 
-    const tagsIncludeArr = tagsInclude === '' ? [] : tagsInclude.split(", ");
+    const tagsIncludeArr = tagsInclude === "" ? [] : tagsInclude.split(", ");
 
-    const tagsExcludeArr = tagsExclude === '' ? [] : tagsExclude.split(", ");
+    const tagsExcludeArr = tagsExclude === "" ? [] : tagsExclude.split(", ");
 
     console.log(tagsIncludeArr);
 
@@ -39,23 +39,19 @@ router.get("/", async (req, res) => {
         $regex: search,
         $options: "i",
       },
-    }
+    };
 
     if (tagsIncludeArr.length > 0) {
       filter.tags.$all = tagsIncludeArr;
     }
 
-    const posts = await Post.find(
-      filter,
-      null,
-      {
-        limit: Number(perPage),
-        skip: (Number(page) - 1) * Number(perPage),
-        sort: {
-          [sortBy]: Number(sortOrder),
-        },
-      }
-    )
+    const posts = await Post.find(filter, null, {
+      limit: Number(perPage),
+      skip: (Number(page) - 1) * Number(perPage),
+      sort: {
+        [sortBy]: Number(sortOrder),
+      },
+    })
       .populate("author")
       .populate("tags");
     const count = await Post.countDocuments(filter);
@@ -82,11 +78,9 @@ router.get("/recommended", auth, async (req, res) => {
 
     const filter = {
       tags: { $in: req.user.likedTags },
-      usersLiked: { $ne: req.user._id }
+      usersLiked: { $ne: req.user._id },
     };
-    const posts = await Post.find(filter,
-    null,
-    {
+    const posts = await Post.find(filter, null, {
       limit: Number(perPage),
       skip: (Number(page) - 1) * Number(perPage),
       sort: {
@@ -152,11 +146,16 @@ router.post(
         action: "CREATE",
       });
 
-      await User.findByIdAndUpdate(req.user._id, {
-        $push: {
-          notifications: new_notify._id,
+      await User.updateMany(
+        {
+          id: { $in: req.user.followers },
         },
-      });
+        {
+          $push: {
+            notifications: new_notify._id,
+          },
+        }
+      );
 
       req.user.posts.push(newPost._id);
       await req.user.save();
@@ -171,11 +170,15 @@ router.post(
 
 router.get("/:_id", async (req, res) => {
   try {
-    const searchedPost = await Post.findByIdAndUpdate(req.params._id, {
-      $inc: {
-        views: 1,
-      }
-    }, { new: true })
+    const searchedPost = await Post.findByIdAndUpdate(
+      req.params._id,
+      {
+        $inc: {
+          views: 1,
+        },
+      },
+      { new: true }
+    )
       .populate({
         path: "comments",
         populate: {
